@@ -16,7 +16,7 @@ try {
         }
     };
 
-    const response = await axios.get( api, { params );
+    const response = await axios.get( api, { params });
     const analysisResult = response.data;
     
     console.log("quality-gate-result: " + JSON.stringify(analysisResult));
