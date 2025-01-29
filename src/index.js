@@ -7,20 +7,16 @@ try {
     const sonarUrl = core.getInput('sonar-host-url');
     const sonarToken = core.getInput('sonar-token');
 
+    let api = `${sonarUrl}/api/qualitygates/project_status` 
     const params = {
-        projectKey
+        projectKey,
+        auth: {
+            username: sonarToken,
+            password: "",
+        }
     };
 
-    const response = await axios.get(
-            `${sonarUrl}/api/qualitygates/project_status`,
-            {
-              params,
-              auth: {
-                username: sonarToken,
-                password: "",
-              },
-            }
-        );
+    const response = await axios.get( api, { params );
     const analysisResult = response.data;
     
     console.log("quality-gate-result: " + JSON.stringify(analysisResult));
