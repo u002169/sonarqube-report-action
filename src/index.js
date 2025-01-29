@@ -11,16 +11,16 @@ try {
         projectKey
     };
 
-    const analysisResult = axios.get(
-        `${sonarUrl}/api/qualitygates/project_status`,
-        {
-          params,
-          auth: {
-            username: sonarToken,
-            password: "",
-          },
-        }
-    );
+    const analysisResult = await axios.get(
+            `${sonarUrl}/api/qualitygates/project_status`,
+            {
+              params,
+              auth: {
+                username: sonarToken,
+                password: "",
+              },
+            }
+        );
 
     console.log("quality-gate-result: " + JSON.stringify(analysisResult));
     
