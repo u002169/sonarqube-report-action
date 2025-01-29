@@ -14,7 +14,7 @@ try {
                     {
                       params,
                       auth: {
-                        username: token,
+                        username: sonarToken,
                         password: "",
                       },
                     });
