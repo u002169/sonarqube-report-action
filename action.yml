@@ -13,11 +13,5 @@ inputs:
     required: true
 
 runs:
-  using: 'composite'
-  steps:
-    - shell: bash
-      run: |
-        npm i axios
-
   using: 'node20'
   main: 'src/index.js'
