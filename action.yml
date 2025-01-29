@@ -14,7 +14,7 @@ inputs:
 
 runs:
   using: 'composite'
-    steps:
-      - shell: bash
-        run: |
-          npm i axios
+  steps:
+    - shell: bash
+      run: |
+        npm i axios
