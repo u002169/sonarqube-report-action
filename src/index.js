@@ -12,7 +12,7 @@ try {
 
     const response = await axios.get( api, 
                     {
-                      params,
+                      projectKey ,
                       auth: {
                         username: sonarToken,
                         password: "",
