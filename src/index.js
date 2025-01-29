@@ -9,7 +9,7 @@ try {
 
     let api = `${sonarUrl}/api/qualitygates/project_status` 
     const params = {
-        { projectKey },
+        projectKey,
         auth: {
             username: sonarToken,
             password: "",
