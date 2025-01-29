@@ -11,7 +11,7 @@ try {
         projectKey
     };
 
-    const analysisResult = await axios.get(
+    const response = await axios.get(
             `${sonarUrl}/api/qualitygates/project_status`,
             {
               params,
@@ -21,7 +21,8 @@ try {
               },
             }
         );
-
+    const analysisResult = response.data;
+    
     console.log("quality-gate-result: " + JSON.stringify(analysisResult));
     
     
