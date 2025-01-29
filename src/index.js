@@ -10,6 +10,7 @@ try {
     let api = `${sonarUrl}/api/qualitygates/project_status` 
     const params = { projectKey };
 
+    console.log("params: " + JSON.stringify(params));
     const response = await axios.get( api, 
                     {
                         params ,
