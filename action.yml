@@ -1,0 +1,17 @@
+name: 'SonarQube Report'
+description: 'Gera report do Sonar na log, summary e PR'
+
+inputs:
+  sonar-project-key:
+    description: "SonarQube project key"
+    required: true
+  sonar-host-url:
+    description: "SonarQube server URL"
+    required: true
+  sonar-token:
+    description: "SonarQube token for retrieving quality gate result"
+    required: true
+
+runs:
+  using: 'node20'
+  main: 'src/index.js'
