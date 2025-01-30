@@ -10,20 +10,22 @@ try {
     let api = `${sonarUrl}/api/qualitygates/project_status` 
     const params = { projectKey };
 
-    console.log("params: " + JSON.stringify(params));
     const response = await axios.get( api, 
-                    {
-                        params ,
-                      auth: {
-                        username: sonarToken,
-                        password: "",
-                      },
-                    });
+                { params ,
+                  auth: {
+                      username: sonarToken,
+                      password: "",
+                },});
     const analysisResult = response.data;
+
+    const { context } = github;
     
+    const reportBody = buildReport( analysisResult, sonarUrl, projectKey, context );
+
+    console.log("reportBody: " + );
+
     console.log("quality-gate-result: " + JSON.stringify(analysisResult));
-    
-    
+        
     console.log(`Project Key: ${projectKey}`);
     console.log(`Sonar URL: ${sonarUrl}`);
     console.log(`Sonar Token: ${sonarToken}`);
