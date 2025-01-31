@@ -14,7 +14,8 @@ export const buildReportConsole = async (analysisResult) => {
 				name: "status",
 				alignment: "center",
 				title: "Parecer",
-				minLen: 15
+				minLen: 10,
+				maxLen: 10
 			},
 			{
 				name: "actualValue",
