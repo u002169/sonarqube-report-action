@@ -8,27 +8,22 @@ export const buildReportConsole = async (analysisResult) => {
 			{
 				name: "metricKey",
 				alignment: "left",
-				title: "Critério",
-				minLen: 50
+				title: "Critério"
 			},
 			{
 				name: "status",
 				alignment: "center",
-				title: "Parecer",
-				minLen: 10,
-				maxLen: 10
+				title: "Parecer"
 			},
 			{
 				name: "actualValue",
 				alignment: "center",
-				title: "Resultado",
-				minLen: 50
+				title: "Resultado"
 			},
 			{
 				name: "errorThreshold",
 				alignment: "center",
-				title: "Threshold",
-				minLen: 50
+				title: "Threshold"
 			},
 		],
 	});
