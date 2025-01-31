@@ -1,16 +1,84 @@
-export const buildReportLog = (analysisResult, sonarUrl, projectKey, context) => {
+import * as core from "@actions/core";
+import { Table } from 'console-table-printer';
 
-	const resultTable = analysisResult.projectStatus.conditions.map(buildRow).join("\n");
+export const buildReportConsole = async (analysisResult) => {
 
-	const report =
-		"|----------------------------------------------------------------------------|\n" +
-		"| Critério                         | Parecer      | Resultado    | Threshold |\n" +
-		"|----------------------------------|--------------|--------------|-----------|\n" +
-		resultTable + "\n" +
-		"|----------------------------------------------------------------------------|\n";
-  
-	return report;
+	const reportTable = new Table({
+		columns: [
+			{
+				name: "metricKey",
+				alignment: "left",
+				title: "Critério"
+			},
+			{
+				name: "status",
+				alignment: "center",
+				title: "Parecer",
+			},
+			{
+				name: "actualValue",
+				alignment: "center",
+				title: "Resultado",
+			},
+			{
+				name: "errorThreshold",
+				alignment: "center",
+				title: "Threshold",
+			},
+		],
+	});
+
+	const rows = analysisResult.projectStatus.conditions.map(buildRow);
+	reportTable.addRows(rows);
+	reportTable.printTable();
 };
+
+export const buildReportSummary = async (analysisResult) => {
+
+	const header = [
+		{
+			header: true,
+			data: "Critério"
+		},
+		{
+			header: true,
+			data: "Parecer",
+		},
+		{
+			header: true,
+			data: "Resultado",
+		},
+		{
+			header: true,
+			data: "Threshold",
+		},
+	];
+
+	const rows = analysisResult.projectStatus.conditions.map(buildRow);
+
+	await core.summary
+		.addHeading('SonarQube Report')
+		.addTable([
+			header,
+			rows
+		])
+		.write()
+};
+
+const buildRow = (row) => {
+	const newRow =
+	{
+		metricKey: formatMetricKey(row.metricKey),
+		status: getStatusEmoji(row.status),
+		actualValue: formatStringNumber(row.actualValue),
+		errorThreshold: `${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
+	}
+
+	return newRow;
+};
+
+
+
 
 export const buildReportPR = (analysisResult, sonarUrl, projectKey, context) => {
 
@@ -41,26 +109,17 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context) => 
 export const getStatusEmoji = (status) => {
 	switch (status) {
 		case "OK":
-			return ":green_circle: OK";
+			return "🟢";
 		case "ERROR":
-			return ":red_circle: REPROVADO";
+			return "🔴";
 		case "WARN":
-			return ":yellow_circle: Warning";
-		default: // "NONE" and others
-			return ":grey_question:";
+			return "🟡";
+		default:
+			return "❔";
 	}
 }
 
-const buildRow = (condition) => {
-	const rowValues = [
-		formatMetricKey(condition.metricKey), // Metric
-		getStatusEmoji(condition.status), // Status
-		formatStringNumber(condition.actualValue), // Value
-		`${getComparatorSymbol(condition.comparator)} ${condition.errorThreshold}`, // Error Threshold
-	];
 
-	return "|" + rowValues.join("|") + "|";
-};
 
 export const formatMetricKey = (metricKey) => {
 	const replacedString = metricKey.replace(/_/g, " ");
@@ -75,11 +134,11 @@ export const formatStringNumber = (value) => {
 
 export const getComparatorSymbol = (comparator) => {
 	switch (comparator) {
-	  case "GT":
-		return ">";
-	  case "LT":
-		return "<";
-	  default:
-		return "";
+		case "GT":
+			return ">";
+		case "LT":
+			return "<";
+		default:
+			return "";
 	}
-  };
+};
