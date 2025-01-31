@@ -41,13 +41,13 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context) => 
 export const getStatusEmoji = (status) => {
 	switch (status) {
 		case "OK":
-			return ":green_circle: OK";
+			return "🟢 OK";
 		case "ERROR":
-			return ":red_circle: REPROVADO";
+			return "🔴 REPROVADO";
 		case "WARN":
-			return ":yellow_circle: Warning";
+			return "🟡 Warning";
 		default: // "NONE" and others
-			return ":grey_question:";
+			return "❔";
 	}
 }
 
