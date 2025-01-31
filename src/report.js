@@ -14,16 +14,17 @@ export const buildReportConsole = async (analysisResult) => {
 				name: "status",
 				alignment: "center",
 				title: "Parecer",
+				minLen: 15
 			},
 			{
 				name: "actualValue",
 				alignment: "center",
-				title: "Resultado",
+				title: "Resultado"
 			},
 			{
 				name: "errorThreshold",
 				alignment: "center",
-				title: "Threshold",
+				title: "Threshold"
 			},
 		],
 	});
@@ -42,15 +43,15 @@ export const buildReportSummary = async (analysisResult) => {
 		},
 		{
 			header: true,
-			data: "Parecer",
+			data: "Parecer"
 		},
 		{
 			header: true,
-			data: "Resultado",
+			data: "Resultado"
 		},
 		{
 			header: true,
-			data: "Threshold",
+			data: "Threshold"
 		},
 	];
 
