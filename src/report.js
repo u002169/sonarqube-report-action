@@ -4,7 +4,7 @@ import { Table } from 'console-table-printer';
 export const buildReportConsole = async (analysisResult) => {
 
 	const reportTable = new Table({
-		charLength: { "🟢": 2, "🔴": 2, "🟡": 2, "❔": 2},
+		charLength: { "🟢": 1, "🔴": 1, "🟡": 1, "❔": 1},
 		columns: [
 			{ name: "criterio", alignment: "left", title: "Critério"},
 			{ name: "parecer", alignment: "center", title: "Parecer" },
