@@ -5,10 +5,10 @@ export const buildReportConsole = async (analysisResult) => {
 
 	const reportTable = new Table({
 		columns: [
-			{ name: "metricKey", alignment: "left", title: "Critério"},
-			{ name: "status", alignment: "center", title: "Parecer" },
-			{ name: "actualValue", alignment: "center", title: "Resultado" },
-			{ name: "errorThreshold", alignment: "center", title: "Threshold" },
+			{ name: "criterio", alignment: "left", title: "Critério"},
+			{ name: "parecer", alignment: "center", title: "Parecer" },
+			{ name: "resultado", alignment: "center", title: "Resultado" },
+			{ name: "threshold", alignment: "center", title: "Threshold" },
 		],
 	});
 
@@ -46,19 +46,17 @@ const buildRowSummary = (row, tableSummary) => {
 		formatStringNumber(row.actualValue),
 		`${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
 	]
-
 	return newRow;
 };
 
 const buildRow = (row) => {
 	const newRow =
 	{
-		metricKey: formatMetricKey(row.metricKey),
-		status: getStatusEmoji(row.status),
-		actualValue: formatStringNumber(row.actualValue),
-		errorThreshold: `${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
+		criterio: formatMetricKey(row.metricKey),
+		parecer: getStatusEmoji(row.status),
+		resultado: formatStringNumber(row.actualValue),
+		threshold: `${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
 	}
-
 	return newRow;
 };
 
