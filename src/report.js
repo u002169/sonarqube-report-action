@@ -33,7 +33,7 @@ export const buildReportSummary = async (analysisResult) => {
 
 	await core.summary
 		.addHeading('SonarQube Report')
-		.addTable(tableSummary);
+		.addTable(tableSummary)
 		.addLink('View staging deployment!', 'https://github.com')
 		.write();
 };
