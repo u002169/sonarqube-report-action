@@ -35,6 +35,8 @@ export const buildReportConsole = async (analysisResult) => {
 
 export const buildReportSummary = async (analysisResult) => {
 
+	let tableSummary = [];
+
 	const header = [
 		{
 			header: true,
@@ -53,6 +55,10 @@ export const buildReportSummary = async (analysisResult) => {
 			data: "Threshold"
 		},
 	];
+
+	tableSummary.add(header);
+	tableSummary.add(["01", "02", "03", "04"])
+	tableSummary.add(["New reliability rating","🟢","1","> 1"],)
 
 	const rows = analysisResult.projectStatus.conditions.map(buildRowSummary);
 
