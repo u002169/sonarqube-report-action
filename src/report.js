@@ -54,15 +54,28 @@ export const buildReportSummary = async (analysisResult) => {
 		},
 	];
 
-	const rows = analysisResult.projectStatus.conditions.map(buildRow);
+	const rows = analysisResult.projectStatus.conditions.map(buildRowSummary);
+
+	console.log(JSON.stringify(rows,null,2));
 
 	await core.summary
 		.addHeading('SonarQube Report')
 		.addTable([
 			header,
 			rows
-		])
-		.write()
+		]).write();
+};
+
+const buildRowSummary = (row) => {
+	const newRow =
+	[
+		formatMetricKey(row.metricKey),
+		getStatusEmoji(row.status),
+		formatStringNumber(row.actualValue),
+		`${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
+	]
+
+	return newRow;
 };
 
 const buildRow = (row) => {
