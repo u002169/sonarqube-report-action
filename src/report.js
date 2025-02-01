@@ -4,13 +4,13 @@ import { Table } from 'console-table-printer';
 export const buildReportConsole = async (analysisResult) => {
 
 	const reportTable = new Table({
+		charLength: { "🟢": 3, "🔴": 3, "🟡": 3, "❔": 3},
 		columns: [
 			{ name: "criterio", alignment: "left", title: "Critério"},
 			{ name: "parecer", alignment: "center", title: "Parecer" },
 			{ name: "resultado", alignment: "center", title: "Resultado" },
 			{ name: "threshold", alignment: "center", title: "Threshold" },
-		],
-		charLength: { "🟢": 2, "🔴": 2, "🟡": 2, "❔": 2}
+		]
 	});
 
 	const rows = analysisResult.projectStatus.conditions.map(buildRow);
