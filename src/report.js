@@ -10,6 +10,7 @@ export const buildReportConsole = async (analysisResult) => {
 			{ name: "resultado", alignment: "center", title: "Resultado" },
 			{ name: "threshold", alignment: "center", title: "Threshold" },
 		],
+		charLength: { "🟢": 2, "🔴": 2, "🟡": 2, "❔": 2}
 	});
 
 	const rows = analysisResult.projectStatus.conditions.map(buildRow);
