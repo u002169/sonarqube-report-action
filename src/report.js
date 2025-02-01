@@ -63,6 +63,18 @@ export const buildReportSummary = async (analysisResult) => {
 		.addTable([
 			header,
 			["01", "02", "03", "04"], 
+			[
+			    "New reliability rating",
+			    "🟢",
+			    "1",
+			    "> 1"
+			  ],
+			  [
+			    "New security rating",
+			    "🟢",
+			    "1",
+			    "> 1"
+			],
 			rows
 		]).write();
 };
