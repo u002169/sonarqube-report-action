@@ -61,8 +61,9 @@ export const buildReportSummary = async (analysisResult) => {
 
 	await core.summary
 		.addHeading('SonarQube Report')
-		.addTable(tableSummary)
-		.write();
+		.addTable(tableSummary);
+	core.summary.configureAlignmentOptions(['left', 'left', 'center']);
+	core.summary.write();
 };
 
 const buildRowSummary = (row, tableSummary) => {
