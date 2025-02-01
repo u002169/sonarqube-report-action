@@ -57,19 +57,14 @@ export const buildReportSummary = async (analysisResult) => {
 	];
 
 	tableSummary.push(header);
-	tableSummary.push(["01", "02", "03", "04"])
-	tableSummary.push(["New reliability rating","🟢","1","> 1"],)
-
-	const rows = analysisResult.projectStatus.conditions.map(buildRowSummary);
-
-	console.log(JSON.stringify(tableSummary,null,2));
+	tableSummary = tableSummary.concat(analysisResult.projectStatus.conditions.map(buildRowSummary));
 
 	await core.summary
 		.addHeading('SonarQube Report')
 		.addTable(tableSummary).write();
 };
 
-const buildRowSummary = (row) => {
+const buildRowSummary = (row, tableSummary) => {
 	const newRow =
 	[
 		formatMetricKey(row.metricKey),
