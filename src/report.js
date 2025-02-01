@@ -66,23 +66,7 @@ export const buildReportSummary = async (analysisResult) => {
 
 	await core.summary
 		.addHeading('SonarQube Report')
-		.addTable([
-			header,
-			["01", "02", "03", "04"], 
-			[
-			    "New reliability rating",
-			    "🟢",
-			    "1",
-			    "> 1"
-			  ],
-			  [
-			    "New security rating",
-			    "🟢",
-			    "1",
-			    "> 1"
-			],
-			rows
-		]).write();
+		.addTable(tableSummary).write();
 };
 
 const buildRowSummary = (row) => {
