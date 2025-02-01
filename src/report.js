@@ -56,9 +56,9 @@ export const buildReportSummary = async (analysisResult) => {
 		},
 	];
 
-	tableSummary.add(header);
-	tableSummary.add(["01", "02", "03", "04"])
-	tableSummary.add(["New reliability rating","🟢","1","> 1"],)
+	tableSummary.push(header);
+	tableSummary.push(["01", "02", "03", "04"])
+	tableSummary.push(["New reliability rating","🟢","1","> 1"],)
 
 	const rows = analysisResult.projectStatus.conditions.map(buildRowSummary);
 
