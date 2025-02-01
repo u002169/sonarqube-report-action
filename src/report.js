@@ -6,7 +6,7 @@ export const buildReportConsole = async (analysisResult) => {
 	const reportTable = new Table({
 		columns: [
 			{ name: "metricKey", alignment: "left", title: "Critério"},
-			{ name: "status", alignment: "center", title: "Parecer🚦" },
+			{ name: "status", alignment: "center", title: "Parecer" },
 			{ name: "actualValue", alignment: "center", title: "Resultado" },
 			{ name: "errorThreshold", alignment: "center", title: "Threshold" },
 		],
