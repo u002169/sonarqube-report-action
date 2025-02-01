@@ -95,7 +95,7 @@ export const getStatusEmoji = (status) => {
 		case "OK":
 			return "🟢";
 		case "ERROR":
-			return "🔴";
+			return "🟥";
 		case "WARN":
 			return "🟡";
 		default:
