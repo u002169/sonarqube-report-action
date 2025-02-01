@@ -62,6 +62,7 @@ export const buildReportSummary = async (analysisResult) => {
 		.addHeading('SonarQube Report')
 		.addTable([
 			header,
+			["01", "02", "03", "04"], 
 			rows
 		]).write();
 };
