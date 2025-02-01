@@ -5,26 +5,10 @@ export const buildReportConsole = async (analysisResult) => {
 
 	const reportTable = new Table({
 		columns: [
-			{
-				name: "metricKey",
-				alignment: "left",
-				title: "Critério"
-			},
-			{
-				name: "status",
-				alignment: "center",
-				title: "Parecer"
-			},
-			{
-				name: "actualValue",
-				alignment: "center",
-				title: "Resultado"
-			},
-			{
-				name: "errorThreshold",
-				alignment: "center",
-				title: "Threshold"
-			},
+			{ name: "metricKey", alignment: "left", title: "Critério"},
+			{ name: "status", alignment: "center", title: "Parecer" },
+			{ name: "actualValue", alignment: "center", title: "Resultado" },
+			{ name: "errorThreshold", alignment: "center", title: "Threshold" },
 		],
 	});
 
@@ -38,22 +22,10 @@ export const buildReportSummary = async (analysisResult) => {
 	let tableSummary = [];
 
 	const header = [
-		{
-			header: true,
-			data: "Critério"
-		},
-		{
-			header: true,
-			data: "Parecer"
-		},
-		{
-			header: true,
-			data: "Resultado"
-		},
-		{
-			header: true,
-			data: "Threshold"
-		},
+		{ header: true, data: "Critério" },
+		{ header: true,	data: "Parecer" },
+		{ header: true,	data: "Resultado" },
+		{ header: true,	data: "Threshold" },
 	];
 
 	tableSummary.push(header);
@@ -62,8 +34,8 @@ export const buildReportSummary = async (analysisResult) => {
 	await core.summary
 		.addHeading('SonarQube Report')
 		.addTable(tableSummary);
-	core.summary.configureAlignmentOptions(['left', 'left', 'center']);
-	core.summary.write();
+		.addLink('View staging deployment!', 'https://github.com')
+		.write();
 };
 
 const buildRowSummary = (row, tableSummary) => {
