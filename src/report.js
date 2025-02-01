@@ -62,7 +62,7 @@ export const buildReportSummary = async (analysisResult) => {
 
 	const rows = analysisResult.projectStatus.conditions.map(buildRowSummary);
 
-	console.log(JSON.stringify(rows,null,2));
+	console.log(JSON.stringify(tableSummary,null,2));
 
 	await core.summary
 		.addHeading('SonarQube Report')
