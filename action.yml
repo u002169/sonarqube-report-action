@@ -11,6 +11,9 @@ inputs:
   sonar-token:
     description: "SonarQube token for retrieving quality gate result"
     required: true
+  github-token:
+    description: "GitHub Token for commenting on the pull request"
+    required: false
 
 runs:
   using: 'node20'
