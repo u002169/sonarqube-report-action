@@ -33,7 +33,7 @@ try {
         const { context } = github;
         const octokit = github.getOctokit(sonarToken);
 
-        const reportBody = buildReport(analysisResult, sonarUrl, projectKey, context, context.issue.number.toString());
+        const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context, context.issue.number.toString());
 
         await octokit.rest.issues.createComment({
             owner: context.repo.owner,
