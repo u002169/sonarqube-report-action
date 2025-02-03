@@ -64,7 +64,7 @@ const buildRowSummary = (row) => {
 
 export const buildReportPR = (analysisResult, sonarUrl, projectKey, context ) => {
 	const reportUrl = '${sonarUrl}/dashboard?id=${projectKey}';
-	const projectStatus = getStatusEmoji(analysisResult.projectStatus.status) + projectStatus == "ERROR" ? "REPROVADO" : "";
+	const projectStatus = getStatusEmoji(analysisResult.projectStatus.status) + analysisResult.projectStatus.status == "ERROR" ? "REPROVADO" : "";
 	const resultTable = analysisResult.projectStatus.conditions.map(buildRowPR).join("\n");
 
 	const resultContext = [
