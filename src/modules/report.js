@@ -68,7 +68,7 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context ) =>
 	const resultTable = analysisResult.projectStatus.conditions.map(buildRowPR).join("\n");
 
 	const resultContext = [
-		`- **Parecer**: ${projectStatus}`,
+		`- **Parecer**: ${projectStatus} ${projectStatus == "ERROR" ? "REPROVADO"}`,
 		//`- **Data da análise**: ${analysisResult.projectStatus.analysisDate}`,
 		`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 	];
