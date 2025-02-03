@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { resultQG } from "./modules/api.js";
-import { printReportConsole, printReportSummary, buildReportPR } from "./modules/report.js";
+import { buildPrintReportConsole, buildPrintReportSummary, buildReportPR } from "./modules/report.js";
 
 try {
     const projectKey = core.getInput('sonar-project-key') || "performa-neon.api-demo";
@@ -14,7 +14,7 @@ try {
 
     // Print report to console
     try {
-        await printReportConsole(analysisResult);
+        await buildPrintReportConsole(analysisResult);
     } catch (error) {
         console.log("----------- Error on buildReportConsole -----------");
         console.log(error);
@@ -22,7 +22,7 @@ try {
 
     //Print report to summary
     try {
-        await printReportSummary(analysisResult);
+        await buildPrintReportSummary(analysisResult);
     } catch (error) {
         console.log("----------- Error on buildReportSummary -----------");
         console.log(error);
@@ -32,18 +32,11 @@ try {
     const isPR = github.context.eventName == "pull_request";
     if (isPR && githubToken) {
         const { context } = github;
-        const octokit = github.getOctokit(githubToken);
 
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context);
         //console.log(reportBody);
 
-        
-        
-        if (issueComment) {
-            await octokit.rest.issues.updateComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, comment_id: issueComment.id, body: reportBody });
-        } else {
-            await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });  
-        }
+        await printReportPR(reportBody, context, githubToken);
 
         if (analysisResult.projectStatus.status === "ERROR") {
             let resultMessage = `Reprovado na avaliação do Quality Gate no SonarQube.`;

@@ -2,7 +2,7 @@ import * as core from "@actions/core";
 import { Table } from 'console-table-printer';
 import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji } from "./utils.js";
 
-export const printReportConsole = async (analysisResult) => {
+export const buildPrintReportConsole = async (analysisResult) => {
 
 	const reportTable = new Table({
 		charLength: { "🟢": 3, "🔴": 3, "🟡": 3, "❔": 3},
@@ -30,7 +30,7 @@ const buildRowConsole = (row) => {
 	return newRow;
 };
 
-export const printReportSummary = async (analysisResult) => {
+export const buildPrintReportSummary = async (analysisResult) => {
 
 	let tableSummary = [];
 
