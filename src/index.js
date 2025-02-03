@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { resultQG } from "./modules/api.js";
-import { buildReportConsole, buildReportSummary, buildReportPR } from "./modules/report.js";
+import { printReportConsole, printReportSummary, buildReportPR } from "./modules/report.js";
 
 try {
     const projectKey = core.getInput('sonar-project-key') || "performa-neon.api-demo";
@@ -14,7 +14,7 @@ try {
 
     // Print report to console
     try {
-        await buildReportConsole(analysisResult);
+        await printReportConsole(analysisResult);
     } catch (error) {
         console.log("----------- Error on buildReportConsole -----------");
         console.log(error);
@@ -22,7 +22,7 @@ try {
 
     //Print report to summary
     try {
-        await buildReportSummary(analysisResult);
+        await printReportSummary(analysisResult);
     } catch (error) {
         console.log("----------- Error on buildReportSummary -----------");
         console.log(error);
@@ -34,18 +34,10 @@ try {
         const { context } = github;
         const octokit = github.getOctokit(githubToken);
 
-        const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context, context.issue.number.toString());
+        const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context);
         //console.log(reportBody);
 
-        const issueComment = await findComment({ token: inputs.githubToken,
-        repository: `${context.repo.owner}/${context.repo.repo}`,
-        issueNumber: context.issue.number,
-        commentAuthor: "github-actions[bot]",
-        bodyIncludes: "SonarQube Quality Gate Result",
-        direction: "first",
-      });
-
-        await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });
+        await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });  
     }
 
 } catch (error) {
