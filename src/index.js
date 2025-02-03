@@ -39,7 +39,7 @@ try {
         
         await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });  
 
-        if (result.projectStatus.status === "ERROR") {
+        if (analysisResult.projectStatus.status === "ERROR") {
             let resultMessage = `Reprovado na avaliação do Quality Gate no SonarQube.`;
             console.error(resultMessage);
             core.setFailed(resultMessage);
