@@ -34,6 +34,7 @@ try {
         const { context } = github;
         const octokit = github.getOctokit(githubToken);
 
+         console.log("aqui");
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context);
         //console.log(reportBody);
 
