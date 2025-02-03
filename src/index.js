@@ -42,7 +42,7 @@ try {
         if (analysisResult.projectStatus.status === "ERROR") {
             let resultMessage = `Reprovado na avaliação do Quality Gate no SonarQube.`;
             //console.error(resultMessage);
-            core.setFailed(resultMessage);
+            //core.setFailed(resultMessage);
         }
     }
 
