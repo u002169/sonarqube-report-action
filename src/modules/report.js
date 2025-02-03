@@ -74,14 +74,14 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context ) =>
 	];
 
 	const report =
-		`### SonarQube Quality Gate Result` +
+		`### SonarQube Quality Gate Result\n` +
 		`${resultContext.join("\n")}` + 
   
-		`| Critério | Parecer | Resultado | Threshold para Reprovação |` +
-		`|:--------:|:-------:|:---------:|:-------------------------:|` +
+		`| Critério | Parecer | Resultado | Threshold para Reprovação |\n` +
+		`|:--------:|:-------:|:---------:|:-------------------------:|\n` +
   		`${resultTable}` +
   
-		`[Para análise detalhada, acesse o SonarQube](${reportUrl})` +
+		`[Para análise detalhada, acesse o SonarQube](${reportUrl})\n` +
 		`#### *Direcionado para a última análise, verifique se é o mesmo dia e horário do report`;
 
 	return report;
