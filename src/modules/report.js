@@ -62,8 +62,7 @@ const buildRowSummary = (row) => {
 	return newRow;
 };
 
-export const buildReportPR = (analysisResult, sonarUrl, projectKey, context, ) => {
-
+export const buildReportPR = (analysisResult, sonarUrl, projectKey, context ) => {
 	const reportUrl = '${sonarUrl}/dashboard?id=${projectKey}';
 	const projectStatus = getStatusEmoji(analysisResult.projectStatus.status);
 	const resultTable = analysisResult.projectStatus.conditions.map(buildRowPR).join("\n");
