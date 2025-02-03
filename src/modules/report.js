@@ -76,7 +76,8 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context ) =>
 	const report =
 		`### SonarQube Quality Gate Result\n` +
 		`${resultContext.join("\n")}` + 
-  
+
+		`\n` +
 		`| Critério | Parecer | Resultado | Threshold para Reprovação |\n` +
 		`|:--------:|:-------:|:---------:|:-------------------------:|\n` +
   		`${resultTable}` +
