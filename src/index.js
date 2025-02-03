@@ -35,7 +35,7 @@ try {
         const octokit = github.getOctokit(githubToken);
 
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context, context.issue.number.toString());
-        //console.log("reportBody: " + JSON.stringify(reportBody,null,2));
+        console.log(reportBody);
 
         await octokit.rest.issues.createComment({
             owner: context.repo.owner,
@@ -44,6 +44,13 @@ try {
             body: reportBody,
         });
     }
+
 } catch (error) {
-    core.setFailed(error.message);
+    if (error instanceof Error) {
+        console.error(error.message);
+        core.setFailed(error.message);
+    } else {
+        console.error("Unexpected error");
+        core.setFailed("Unexpected error");
+    }
 }
