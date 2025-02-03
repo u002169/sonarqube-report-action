@@ -36,7 +36,6 @@ try {
     console.log("context.repo.owner: " + context.repo.owner)
     console.log("context.repo.repo: " + context.repo.repo)
     console.log("context.issue.number: " + context.issue.number)
-    console.log("github.context.pull_request: " + github.context.pull_request)
     if (isPR) {
         const { context } = github;
         const octokit = github.getOctokit(sonarToken);
