@@ -35,14 +35,17 @@ try {
         const octokit = github.getOctokit(githubToken);
 
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context, context.issue.number.toString());
-        console.log(reportBody);
+        //console.log(reportBody);
 
-        await octokit.rest.issues.createComment({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            issue_number: context.issue.number,
-            body: reportBody,
-        });
+        const issueComment = await findComment({ token: inputs.githubToken,
+        repository: `${context.repo.owner}/${context.repo.repo}`,
+        issueNumber: context.issue.number,
+        commentAuthor: "github-actions[bot]",
+        bodyIncludes: "SonarQube Quality Gate Result",
+        direction: "first",
+      });
+
+        await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });
     }
 
 } catch (error) {
