@@ -37,14 +37,6 @@ try {
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context, context.issue.number.toString());
         //console.log("reportBody: " + JSON.stringify(reportBody,null,2));
 
-        console.log("github.context.eventName: " + github.context.eventName)
-        console.log("github.context.action: " + github.context.action)
-        console.log("github.context.payload.pull_request: " + github.context.payload.pull_request)
-        console.log("github.context.pull_request: " + github.context.pull_request)
-        console.log("context.repo.owner: " + context.repo.owner)
-        console.log("context.repo.repo: " + context.repo.repo)
-        console.log("context.issue.number: " + context.issue.number)
-
         await octokit.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
