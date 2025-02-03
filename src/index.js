@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { resultQG } from "./modules/api.js";
-import { buildReportConsole, buildReportSummary } from "./modules/report.js";
+import { buildReportConsole, buildReportSummary, buildReportPR } from "./modules/report.js";
 
 try {
     const projectKey = core.getInput('sonar-project-key') || "performa-neon.api-demo";
