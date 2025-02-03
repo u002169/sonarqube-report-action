@@ -7,6 +7,7 @@ try {
     const projectKey = core.getInput('sonar-project-key') || "performa-neon.api-demo";
     const sonarUrl = core.getInput('sonar-host-url') || "https://sonarqube.in.devneon.com.br";
     const sonarToken = core.getInput('sonar-token') || "squ_a91a2ac9d5ba2164ba89058c5b12527205b2eb92";
+    const githubToken = core.getInput('github-token')
 
     const analysisResult = await resultQG(projectKey, sonarUrl, sonarToken);
     //console.log(JSON.stringify(analysisResult,null,2));
@@ -31,7 +32,7 @@ try {
     const isPR = github.context.eventName == "pull_request";
     if (isPR) {
         const { context } = github;
-        const octokit = github.getOctokit(sonarToken);
+        const octokit = github.getOctokit(githubToken);
 
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context, context.issue.number.toString());
         //console.log("reportBody: " + JSON.stringify(reportBody,null,2));
