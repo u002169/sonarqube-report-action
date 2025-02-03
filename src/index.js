@@ -34,10 +34,11 @@ try {
         const { context } = github;
         const octokit = github.getOctokit(githubToken);
 
-         console.log("aqui");
+        
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context);
         //console.log(reportBody);
-
+        console.log("aqui");
+        
         await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });  
     }
 
