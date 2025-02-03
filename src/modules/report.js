@@ -1,5 +1,6 @@
 import * as core from "@actions/core";
 import { Table } from 'console-table-printer';
+import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji } from "./utils.js";
 
 export const buildReportConsole = async (analysisResult) => {
 
@@ -9,13 +10,24 @@ export const buildReportConsole = async (analysisResult) => {
 			{ name: "criterio", alignment: "left", title: "Critério"},
 			{ name: "parecer", alignment: "center", title: "Parecer" },
 			{ name: "resultado", alignment: "center", title: "Resultado" },
-			{ name: "threshold", alignment: "center", title: "Threshold" },
+			{ name: "threshold", alignment: "center", title: "Threshold para Reprovação" },
 		]
 	});
 
-	const rows = analysisResult.projectStatus.conditions.map(buildRow);
+	const rows = analysisResult.projectStatus.conditions.map(buildRowConsole);
 	reportTable.addRows(rows);
 	reportTable.printTable();
+};
+
+const buildRowConsole = (row) => {
+	const newRow =
+	{
+		criterio: formatMetricKey(row.metricKey),
+		parecer: getStatusEmoji(row.status),
+		resultado: formatStringNumber(row.actualValue),
+		threshold: `${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
+	}
+	return newRow;
 };
 
 export const buildReportSummary = async (analysisResult) => {
@@ -26,7 +38,7 @@ export const buildReportSummary = async (analysisResult) => {
 		{ header: true, data: "Critério" },
 		{ header: true,	data: "Parecer" },
 		{ header: true,	data: "Resultado" },
-		{ header: true,	data: "Threshold" },
+		{ header: true,	data: "Threshold para Reprovação" },
 	];
 
 	tableSummary.push(header);
@@ -39,7 +51,7 @@ export const buildReportSummary = async (analysisResult) => {
 		.write();
 };
 
-const buildRowSummary = (row, tableSummary) => {
+const buildRowSummary = (row) => {
 	const newRow =
 	[
 		formatMetricKey(row.metricKey),
@@ -50,28 +62,15 @@ const buildRowSummary = (row, tableSummary) => {
 	return newRow;
 };
 
-const buildRow = (row) => {
-	const newRow =
-	{
-		criterio: formatMetricKey(row.metricKey),
-		parecer: getStatusEmoji(row.status),
-		resultado: formatStringNumber(row.actualValue),
-		threshold: `${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
-	}
-	return newRow;
-};
-
-
-
-
-export const buildReportPR = (analysisResult, sonarUrl, projectKey, context) => {
+export const buildReportPR = (analysisResult, sonarUrl, projectKey, context, ) => {
 
 	const reportUrl = '${sonarUrl}/dashboard?id=${projectKey}';
 	const projectStatus = getStatusEmoji(analysisResult.projectStatus.status);
-	const resultTable = analysisResult.projectStatus.conditions.map(buildRow).join("\n");
+	const resultTable = analysisResult.projectStatus.conditions.map(buildRowPR).join("\n");
 
 	const resultContext = [
-		`- **Parecer final**: ${projectStatus}`,
+		`- **Parecer final**: ${projectStatus}`,`
+		- **Data da análise**: ${analysisResult.projectStatus.analysisDate}`,
 		`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 	];
 
@@ -79,8 +78,8 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context) => 
 		`### SonarQube Quality Gate Result
 		${resultContext.join("\n")}
   
-		| Metric | Status | Value | Error Threshold |
-		|:------:|:------:|:-----:|:---------------:|
+		| Critério | Parecer | Resultado | Threshold para Reprovação |
+		|:--------:|:-------:|:---------:|:-------------------------:|
   		${resultTable}
   
 		[Para análise detalhada, acesse o SonarQube](${reportUrl})
@@ -89,40 +88,16 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context) => 
 	return report;
 };
 
-
-export const getStatusEmoji = (status) => {
-	switch (status) {
-		case "OK":
-			return "🟢";
-		case "ERROR":
-			return "🔴";
-		case "WARN":
-			return "🟡";
-		default:
-			return "❔";
-	}
-}
+const buildRowPR= (row) => {
+	const rowValues = [
+	  formatMetricKey(row.metricKey), // Metric
+	  getStatusEmoji(row.status), // Status
+	  formatStringNumber(row.actualValue), // Value
+	  `${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`, // Error Threshold
+	];
+  
+	return "|" + rowValues.join("|") + "|";
+  };
 
 
 
-export const formatMetricKey = (metricKey) => {
-	const replacedString = metricKey.replace(/_/g, " ");
-	return replacedString.charAt(0).toUpperCase() + replacedString.slice(1);
-};
-
-export const formatStringNumber = (value) => {
-	const floatValue = parseFloat(value);
-	const isValueInteger = floatValue % 1 === 0;
-	return isValueInteger ? floatValue.toFixed(0) : floatValue.toFixed(2);
-};
-
-export const getComparatorSymbol = (comparator) => {
-	switch (comparator) {
-		case "GT":
-			return ">";
-		case "LT":
-			return "<";
-		default:
-			return "";
-	}
-};
