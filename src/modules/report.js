@@ -68,21 +68,21 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context ) =>
 	const resultTable = analysisResult.projectStatus.conditions.map(buildRowPR).join("\n");
 
 	const resultContext = [
-		`- **Parecer final**: ${projectStatus}`,`
-		- **Data da análise**: ${analysisResult.projectStatus.analysisDate}`,
+		`- **Parecer**: ${projectStatus}`,
+		`- **Data da análise**: ${analysisResult.projectStatus.analysisDate}`,
 		`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 	];
 
 	const report =
-		`### SonarQube Quality Gate Result
-		${resultContext.join("\n")}
+		`### SonarQube Quality Gate Result` +
+		`${resultContext.join("\n")}` + 
   
-		| Critério | Parecer | Resultado | Threshold para Reprovação |
-		|:--------:|:-------:|:---------:|:-------------------------:|
-  		${resultTable}
+		`| Critério | Parecer | Resultado | Threshold para Reprovação |` +
+		`|:--------:|:-------:|:---------:|:-------------------------:|` +
+  		`${resultTable}` +
   
-		[Para análise detalhada, acesse o SonarQube](${reportUrl})
-		#### *Direcionado para a última análise, verifique se é o mesmo dia e horário do report`;
+		`[Para análise detalhada, acesse o SonarQube](${reportUrl})` +
+		`#### *Direcionado para a última análise, verifique se é o mesmo dia e horário do report`;
 
 	return report;
 };
