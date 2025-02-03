@@ -36,8 +36,14 @@ try {
 
         const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context);
         //console.log(reportBody);
+
         
-        await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });  
+        
+        if (issueComment) {
+            await octokit.rest.issues.updateComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, comment_id: issueComment.id, body: reportBody });
+        } else {
+            await octokit.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number, body: reportBody });  
+        }
 
         if (analysisResult.projectStatus.status === "ERROR") {
             let resultMessage = `Reprovado na avaliação do Quality Gate no SonarQube.`;
