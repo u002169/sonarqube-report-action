@@ -30,7 +30,7 @@ try {
 
     //Print report to PR
     const isPR = github.context.eventName == "pull_request";
-    if (isPR) {
+    if (isPR && githubToken) {
         const { context } = github;
         const octokit = github.getOctokit(githubToken);
 
