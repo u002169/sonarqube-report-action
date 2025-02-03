@@ -74,7 +74,7 @@ export const buildReportPR = (analysisResult, sonarUrl, projectKey, context ) =>
 	];
 
 	const report =
-		`### SonarQube Quality Gate Result\n` +
+		`### SonarQube Report\n` +
 		`${resultContext.join("\n")}` + 
 		`\n \n` +
 		
