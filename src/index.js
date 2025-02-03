@@ -30,6 +30,9 @@ try {
     //Print report to PR
     const isPR = github.context.eventName == "pull_request";
     console.log("github.context.eventName: " + github.context.eventName)
+    console.log("github.context.action: " + github.context.action)
+    console.log("github.context.payload.pull_request: " + github.context.payload.pull_request)
+    console.log("github.context.pull_request: " + github.context.pull_request)
     if (isPR) {
         const { context } = github;
         const octokit = github.getOctokit(sonarToken);
