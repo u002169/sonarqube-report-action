@@ -57,6 +57,8 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 	await core.summary
 		.addHeading('SonarQube Report')
 		.addTable(tableSummary)
+		.addRaw(`Total repos: 123`).addEOL()
+                .addRaw(`Large repos: 123`).addEOL()
 		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
 };
