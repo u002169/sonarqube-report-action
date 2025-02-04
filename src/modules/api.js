@@ -34,7 +34,7 @@ export const getDateAnalysis = async (analysisId, projectKey, sonarUrl, sonarTok
     else
         analysis = response.data.analyses[0];
 
-    return analysis.date;
+    return new Date(analysis.date).toISOString().replace(/T/, ' ').replace(/\..+/, '');
 };
 
 export const getQualityGate = async (projectKey, sonarUrl, sonarToken) => {
