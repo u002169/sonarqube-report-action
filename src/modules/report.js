@@ -57,11 +57,11 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 	await core.summary
 		.addHeading('SonarQube Report')
 		.addRaw( `Data da análise: ${dateAnalysis}` )
-		.addEOL()
+		.addBreak()
 		.addRaw( `ID da Análise: ${analysisId}` )
 		.addBreak()
 		.addRaw( `Quality Gate: ${qualityGate}` )
-		.addEOL()
+		.addBreak()
 		.addTable(tableSummary)
 		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
