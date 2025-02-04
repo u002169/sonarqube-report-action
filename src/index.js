@@ -1,21 +1,27 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import { resultQG } from "./modules/api.js";
+import { getResultQG, getDateAnalysis, getQualityGate } from "./modules/api.js";
 import { buildPrintReportConsole, buildPrintReportSummary, buildReportPR } from "./modules/report.js";
 import { printReportPR } from "./modules/print.js";
 
 try {
+    const analysisId = core.getInput('sonar-analysis-id') || "AZSCUMEmure-xcw1RbtP";
     const projectKey = core.getInput('sonar-project-key') || "performa-neon.api-demo";
     const sonarUrl = core.getInput('sonar-host-url') || "https://sonarqube.in.devneon.com.br";
     const sonarToken = core.getInput('sonar-token') || "squ_a91a2ac9d5ba2164ba89058c5b12527205b2eb92";
     const githubToken = core.getInput('github-token')
 
-    const analysisResult = await resultQG(projectKey, sonarUrl, sonarToken);
+    const analysisResult = await getResultQG(analysisId, projectKey, sonarUrl, sonarToken);
+    const dateAnalysis = await getDateAnalysis(analysisId, projectKey, sonarUrl, sonarToken);
+    console.log(`Analysis Date: ${dateAnalysis}`);
+    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
+    console.log(`Quality Gate: ${qualityGate}`);
+
     //console.log(JSON.stringify(analysisResult,null,2));
 
     // Print report to console
     try {
-        await buildPrintReportConsole(analysisResult);
+        await buildPrintReportConsole(analysisResult, analysisId, dateAnalysis, qualityGate);
     } catch (error) {
         console.log("----------- Error on buildReportConsole -----------");
         console.log(error);
@@ -23,7 +29,7 @@ try {
 
     //Print report to summary
     try {
-        await buildPrintReportSummary(analysisResult);
+        await buildPrintReportSummary(analysisResult, analysisId, dateAnalysis, qualityGate);
     } catch (error) {
         console.log("----------- Error on buildReportSummary -----------");
         console.log(error);
@@ -34,7 +40,7 @@ try {
     if (isPR && githubToken) {
         const { context } = github;
 
-        const reportBody = buildReportPR(analysisResult, sonarUrl, projectKey, context);
+        const reportBody = buildReportPR(analysisResult, analysisId, dateAnalysis, qualityGate, sonarUrl, projectKey, context);
         //console.log(reportBody);
 
         await printReportPR(reportBody, context, githubToken);
