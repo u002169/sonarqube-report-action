@@ -11,6 +11,10 @@ export const getStatusEmoji = (status) => {
 	}
 }
 
+export const getStatusAnalysis = (status) => {
+	return getStatusEmoji(status) + (status == "ERROR" ? " REPROVADO" : " OK");
+}
+
 export const formatMetricKey = (metricKey) => {
 	const replacedString = metricKey.replace(/_/g, " ");
 	return replacedString.charAt(0).toUpperCase() + replacedString.slice(1);

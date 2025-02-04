@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import { Table } from 'console-table-printer';
-import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji } from "./utils.js";
+import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji, getStatusAnalysis } from "./utils.js";
 
 export const buildPrintReportConsole = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed) => {
 	const reportTable = new Table({
@@ -24,9 +24,10 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 		return newRow;
 	});
 
-	console.log("----------------------------------------------------------------");
-	console.log("                        SonarQube Report                        ");
-	console.log("----------------------------------------------------------------");
+	console.log("------------------------------------------------------------------------");
+	console.log("                            SonarQube Report                            ");
+	console.log("------------------------------------------------------------------------");
+	console.log( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
 	console.log( `Data da análise: ${dateAnalysis}` )
 	console.log( `ID da Análise: ${analysisId}` )
 	console.log( `Quality Gate: ${qualityGate}` )
@@ -60,6 +61,8 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 
 	await core.summary
 		.addHeading('SonarQube Report', 2)
+		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
+		.addBreak()
 		.addRaw( `Data da análise: ${dateAnalysis}` )
 		.addBreak()
 		.addRaw( `ID da Análise: ${analysisId}` )
@@ -75,7 +78,6 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 
 export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, sonarUrl, projectKey, context) => {
 	const reportUrl = '${sonarUrl}/dashboard?id=${projectKey}';
-	const projectStatus = getStatusEmoji(analysisResult.projectStatus.status) + (analysisResult.projectStatus.status == "ERROR" ? "REPROVADO" : "OK");
 	
 	const resultTable = analysisResult.projectStatus.conditions.map((row) => {
 		const rowValues = [
@@ -88,7 +90,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 	}).join("\n");
 
 	const resultContext = [
-		`- **Parecer**: ${projectStatus} `,
+		`- **Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
 		`- **Data da análise**: ${dateAnalysis}`,
 		analysisId ? `- **ID da Análise**: ${analysisId}`: "",
 		`- **Quality Gate**: ${qualityGate}`,
