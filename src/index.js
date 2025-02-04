@@ -6,7 +6,7 @@ import { printReportPR } from "./modules/print.js";
 import { sourceAnalysedMsg } from "./modules/utils.js";
 
 try {
-    const analysisId = core.getInput('sonar-analysis-id') || process.env["sonar-analysis-id"] ? process.env["sonar-analysis-id"].trim() : null;
+    const analysisId = core.getInput('sonar-analysis-id') || process.env["sonar-analysis-id"] ? process.env["sonar-analysis-id"].trim() : "";
     const projectKey = core.getInput('sonar-project-key') || process.env["sonar-project-key"].trim();
     const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"].trim();
     const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"].trim();
@@ -19,7 +19,10 @@ try {
 
     const analysisResult = await getResultQG(analysisId, projectKey, sonarUrl, sonarToken);
     //console.log(JSON.stringify(analysisResult,null,2));
-    const dateAnalysis = await getDateAnalysis(analysisId, projectKey, sonarUrl, sonarToken);
+    const analysisInfos = await getDateAnalysis(analysisId, projectKey, sonarUrl, sonarToken);
+    const dateAnalysis = new Date(analysisInfos.date).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+    const analysisKey = analysisInfos.key; 
+     
     //console.log(`Analysis Date: ${dateAnalysis}`);
     const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
     //console.log(`Quality Gate: ${qualityGate}`);
@@ -28,7 +31,7 @@ try {
 
     // Print report to console
     try {
-        await buildPrintReportConsole(analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed);
+        await buildPrintReportConsole(analysisResult, analysisKey, dateAnalysis, qualityGate, sourceAnalysed);
     } catch (error) {
         console.log("----------- Error on buildReportConsole -----------");
         console.log(error);
@@ -36,7 +39,7 @@ try {
 
     //Print report to summary
     try {
-        await buildPrintReportSummary(analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed);
+        await buildPrintReportSummary(analysisResult, analysisKey, dateAnalysis, qualityGate, sourceAnalysed);
     } catch (error) {
         console.log("----------- Error on buildReportSummary -----------");
         console.log(error);
@@ -47,7 +50,7 @@ try {
     if (isPR && githubToken) {
         const { context } = github;
 
-        const reportBody = buildReportPR(analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, sonarUrl, projectKey, context);
+        const reportBody = buildReportPR(analysisResult, analysisKey, dateAnalysis, qualityGate, sourceAnalysed, sonarUrl, projectKey, context);
         //console.log(reportBody);
 
         await printReportPR(reportBody, context, githubToken);

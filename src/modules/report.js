@@ -90,10 +90,10 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 	}).join("\n");
 
 	const resultContext = [
-		`- **Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
-		`- **Data da análise**: ${dateAnalysis}`,
-		analysisId ? `- **ID da Análise**: ${analysisId}`: "",
-		`- **Quality Gate**: ${qualityGate}`,
+		`**Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
+		`**Data da análise**: ${dateAnalysis}`,
+		`**ID da Análise**: ${analysisId}`,
+		`**Quality Gate**: ${qualityGate}`,
 		`- **Fonte analisado**: ${sourceAnalysed}`,
 		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 	];
