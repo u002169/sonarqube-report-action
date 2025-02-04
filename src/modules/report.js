@@ -3,7 +3,6 @@ import { Table } from 'console-table-printer';
 import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji } from "./utils.js";
 
 export const buildPrintReportConsole = async (analysisResult, analysisId, dateAnalysis, qualityGate) => {
-
 	const reportTable = new Table({
 		charLength: { "🟢": 3, "🔴": 3, "🟡": 3, "❔": 3 },
 		columns: [
@@ -36,9 +35,7 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 };
 
 export const buildPrintReportSummary = async (analysisResult, analysisId, dateAnalysis, qualityGate) => {
-
 	let tableSummary = [];
-
 	const header = [
 		{ header: true, data: "Critério" },
 		{ header: true, data: "Parecer" },
@@ -99,11 +96,9 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		`## SonarQube Report\n` +
 		`${resultContext.join("\n")}` +
 		`\n \n` +
-
 		`| Critério | Parecer | Resultado | Threshold para Reprovação |\n` +
 		`|:--------:|:-------:|:---------:|:-------------------------:|\n` +
 		`${resultTable}` +
-
 		`\n \n` +
 		`[Para análise detalhada, acesse o SonarQube](${reportUrl})\n` +
 		`#### *No dash do Sonar abre na última análise, verifique se é o mesmo dia e horário da análise do report`;
