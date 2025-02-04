@@ -77,14 +77,14 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 
 	const resultContext = [
 		`- **Parecer**: ${projectStatus} `,
-		`- **Data da análise**: ${dateAnalysis}`,
+		`- *Data da análise**: ${dateAnalysis}`,
 		analysisId ? `- **ID da Análise**: ${analysisId}`: "",
 		`- **Quality Gate**: ${qualityGate}`,
-		`- Solicitado por @${context.actor} on \`${context.eventName}\``,
+		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 	];
 
 	const report =
-		`### SonarQube Report\n` +
+		`## SonarQube Report\n` +
 		`${resultContext.join("\n")}` +
 		`\n \n` +
 
