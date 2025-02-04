@@ -61,7 +61,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 	tableSummary = tableSummary.concat(rows);
 
 	await core.summary
-		.addHeading('SonarQube Report')
+		.addHeading('SonarQube Report', 2)
 		.addRaw( `Data da análise: ${dateAnalysis}` )
 		.addBreak()
 		.addRaw( `ID da Análise: ${analysisId}` )
