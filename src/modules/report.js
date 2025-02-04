@@ -25,6 +25,12 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 		return newRow;
 	});
 
+	console.log("----------------------------");
+	console.log("      SonarQube Report      ");
+	console.log("----------------------------");
+	console.log( `Data da análise: ${dateAnalysis}` )
+	console.log( `ID da Análise: ${analysisId}` )
+	console.log( `Quality Gate: ${qualityGate}` )
 	reportTable.addRows(rows);
 	reportTable.printTable();
 };
