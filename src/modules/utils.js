@@ -32,3 +32,11 @@ export const getComparatorSymbol = (comparator) => {
 			return "";
 	}
 };
+
+export const sourceAnalysedMsg = (analysisResult) => {
+	let ret;
+	if(analysisResult.projectStatus.period.mode == "NUMBER_OF_DAYS") {
+		ret = "Alterado nos últimos " + analysisResult.projectStatus.period.parameter + " dias";
+	}
+	return ret;
+}

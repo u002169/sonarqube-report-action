@@ -3,25 +3,32 @@ import * as github from "@actions/github";
 import { getResultQG, getDateAnalysis, getQualityGate } from "./modules/api.js";
 import { buildPrintReportConsole, buildPrintReportSummary, buildReportPR } from "./modules/report.js";
 import { printReportPR } from "./modules/print.js";
+import { sourceAnalysedMsg } from "./modules/utils.js";
 
 try {
-    const analysisId = core.getInput('sonar-analysis-id') || "AZSCUMEmure-xcw1RbtP";
-    const projectKey = core.getInput('sonar-project-key') || "performa-neon.api-demo";
-    const sonarUrl = core.getInput('sonar-host-url') || "https://sonarqube.in.devneon.com.br";
-    const sonarToken = core.getInput('sonar-token') || "squ_a91a2ac9d5ba2164ba89058c5b12527205b2eb92";
-    const githubToken = core.getInput('github-token')
+    const analysisId = core.getInput('sonar-analysis-id') || process.env["sonar-analysis-id"] ? process.env["sonar-analysis-id"].trim() : null;
+    const projectKey = core.getInput('sonar-project-key') || process.env["sonar-project-key"].trim();
+    const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"].trim();
+    const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"].trim();
+    const githubToken = core.getInput('github-token');
+
+    // console.log(`Analysis ID: ${analysisId}`);
+    // console.log(`Project Key: ${projectKey}`);
+    // console.log(`SonarQube URL: ${sonarUrl}`);
+    // console.log(`SonarQube Token: ${sonarToken}`);
 
     const analysisResult = await getResultQG(analysisId, projectKey, sonarUrl, sonarToken);
-    const dateAnalysis = await getDateAnalysis(analysisId, projectKey, sonarUrl, sonarToken);
-    console.log(`Analysis Date: ${dateAnalysis}`);
-    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
-    console.log(`Quality Gate: ${qualityGate}`);
-
     //console.log(JSON.stringify(analysisResult,null,2));
+    const dateAnalysis = await getDateAnalysis(analysisId, projectKey, sonarUrl, sonarToken);
+    //console.log(`Analysis Date: ${dateAnalysis}`);
+    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
+    //console.log(`Quality Gate: ${qualityGate}`);
+    const sourceAnalysed = sourceAnalysedMsg(analysisResult);
+    console.log(`Source Analysed: ${sourceAnalysed}`);
 
     // Print report to console
     try {
-        await buildPrintReportConsole(analysisResult, analysisId, dateAnalysis, qualityGate);
+        await buildPrintReportConsole(analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed);
     } catch (error) {
         console.log("----------- Error on buildReportConsole -----------");
         console.log(error);
@@ -29,7 +36,7 @@ try {
 
     //Print report to summary
     try {
-        await buildPrintReportSummary(analysisResult, analysisId, dateAnalysis, qualityGate);
+        await buildPrintReportSummary(analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed);
     } catch (error) {
         console.log("----------- Error on buildReportSummary -----------");
         console.log(error);
@@ -40,7 +47,7 @@ try {
     if (isPR && githubToken) {
         const { context } = github;
 
-        const reportBody = buildReportPR(analysisResult, analysisId, dateAnalysis, qualityGate, sonarUrl, projectKey, context);
+        const reportBody = buildReportPR(analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, sonarUrl, projectKey, context);
         //console.log(reportBody);
 
         await printReportPR(reportBody, context, githubToken);

@@ -2,9 +2,9 @@ import * as core from "@actions/core";
 import { Table } from 'console-table-printer';
 import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji } from "./utils.js";
 
-export const buildPrintReportConsole = async (analysisResult, analysisId, dateAnalysis, qualityGate) => {
+export const buildPrintReportConsole = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed) => {
 	const reportTable = new Table({
-		charLength: { "🟢": 3, "🔴": 3, "🟡": 3, "❔": 3 },
+		charLength: { "🟢": 2, "🔴": 2, "🟡": 2, "❔": 2, "❌": 2 },
 		columns: [
 			{ name: "criterio", alignment: "left", title: "Critério" },
 			{ name: "parecer", alignment: "center", title: "Parecer" },
@@ -30,6 +30,7 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 	console.log( `Data da análise: ${dateAnalysis}` )
 	console.log( `ID da Análise: ${analysisId}` )
 	console.log( `Quality Gate: ${qualityGate}` )
+	console.log( `Fonte analisado: ${sourceAnalysed}` );
 	reportTable.addRows(rows);
 	reportTable.printTable();
 };
@@ -65,6 +66,8 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addBreak()
 		.addRaw( `Quality Gate: ${qualityGate}` )
 		.addBreak()
+		.addRaw( `Fonte analisado: ${sourceAnalysed}` )
+		.addBreak()
 		.addTable(tableSummary)
 		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
@@ -89,6 +92,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		`- **Data da análise**: ${dateAnalysis}`,
 		analysisId ? `- **ID da Análise**: ${analysisId}`: "",
 		`- **Quality Gate**: ${qualityGate}`,
+		`- **Fonte analisado**: ${sourceAnalysed}`,
 		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 	];
 
