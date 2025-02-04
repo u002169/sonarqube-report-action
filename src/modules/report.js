@@ -35,7 +35,7 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 	reportTable.printTable();
 };
 
-export const buildPrintReportSummary = async (analysisResult, analysisId, dateAnalysis, qualityGate) => {
+export const buildPrintReportSummary = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed ) => {
 	let tableSummary = [];
 	const header = [
 		{ header: true, data: "Critério" },
@@ -73,7 +73,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.write();
 };
 
-export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityGate, sonarUrl, projectKey, context) => {
+export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, sonarUrl, projectKey, context) => {
 	const reportUrl = '${sonarUrl}/dashboard?id=${projectKey}';
 	const projectStatus = getStatusEmoji(analysisResult.projectStatus.status) + (analysisResult.projectStatus.status == "ERROR" ? "REPROVADO" : "OK");
 	
