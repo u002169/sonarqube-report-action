@@ -77,7 +77,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 
 	const resultContext = [
 		`- **Parecer**: ${projectStatus} `,
-		`- *Data da análise**: ${dateAnalysis}`,
+		`- **Data da análise**: ${dateAnalysis}`,
 		analysisId ? `- **ID da Análise**: ${analysisId}`: "",
 		`- **Quality Gate**: ${qualityGate}`,
 		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
@@ -94,7 +94,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 
 		`\n \n` +
 		`[Para análise detalhada, acesse o SonarQube](${reportUrl})\n` +
-		`#### *Direcionado para a última análise, verifique se é o mesmo dia e horário do report`;
+		`#### *No dash do Sonar abre na última análise, verifique se é o mesmo dia e horário da análise do report`;
 
 	return report;
 };
