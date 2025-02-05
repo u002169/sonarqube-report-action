@@ -73,7 +73,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 
 	await core.summary
 		.addHeading('SonarQube Report', 2)
-		.addRaw( `\u001b[1m Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
+		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
 		.addBreak();
 	if ( analysisResult.projectStatus.status == "ERROR" ){
 		await core.summary.addRaw( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
