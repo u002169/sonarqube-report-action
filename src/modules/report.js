@@ -32,7 +32,7 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 	console.log("                                     SonarQube Report                                     ");
 	console.log("------------------------------------------------------------------------------------------");
 	console.log( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
-	console.log( `💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡` )
+	console.log( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
     console.log( `${linkGuiaSonar}` );        
 	console.log( `Dashboard de análise no Sonar:` )
     console.log( `${dashSonar}` );
@@ -75,7 +75,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addHeading('SonarQube Report', 2)
 		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
 		.addBreak()
-		.addRaw( `💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡` )
+		.addRaw( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
 		.addBreak()
 		.addLink( `${linkGuiaSonar}` )
 		.addBreak()
@@ -111,8 +111,8 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 	}).join("\n");
 
 	const resultContext = [
-		`**Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
-		`💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡\n` +
+		`-**Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
+		`💡 Acesse o guia para identificar a causa da reprovação: 💡\n` +
 		`${linkGuiaSonar}\n` +
 		`Dashboard de análise no Sonar:\n` +
 		`${dashSonar}`,
@@ -128,10 +128,10 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		`${resultTable}` +
 		
 		`\n \n` +
-		`Data da análise**: ${dateAnalysis}\n` +
-		`ID da Análise**: ${analysisId}\n` +
-		`Quality Gate**: ${qualityGate}\n` +
-		`Fonte analisado**: ${sourceAnalysed}\n`
+		`Data da análise: ${dateAnalysis}\n` +
+		`ID da Análise: ${analysisId}\n` +
+		`Quality Gate: ${qualityGate}\n` +
+		`Fonte analisado: ${sourceAnalysed}\n`
 		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 		//`#### *No dash do Sonar abre na última análise, verifique se é o mesmo dia e horário da análise do report`;
 
