@@ -46,7 +46,7 @@ try {
 
         await printReportPR(reportBody, context, githubToken);
 
-        if (analysisResult.projectStatus.status === "ERROR") {
+        if (analysisResults.projectStatus.status === "ERROR") {
             let resultMessage = `Reprovado na avaliação do Quality Gate no SonarQube.`;
             console.error(resultMessage);
             core.setFailed(resultMessage);
