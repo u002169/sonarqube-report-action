@@ -16,7 +16,7 @@ inputs:
     required: true
   github-token:
     description: "GitHub Token for commenting on the pull request"
-    required: true
+    required: false
 
 runs:
   using: 'node20'
