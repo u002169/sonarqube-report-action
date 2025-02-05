@@ -1,21 +1,6 @@
 import axios from "axios";
 
-export const getResultQG = async (analysisId, projectKey, sonarUrl, sonarToken) => {
-    const api = `${sonarUrl}/api/qualitygates/project_status`
-    const params = analysisId ? { analysisId } : { projectKey };
-    
-    const response = await axios.get(api,
-        {
-            params,
-            auth: {
-                username: sonarToken,
-                password: "",
-            },
-        });
-    return response.data;
-};
-
-export const getDateAnalysis = async (analysisId, projectKey, sonarUrl, sonarToken) => {
+export const getAnalysisInfos = async (analysisId, projectKey, sonarUrl, sonarToken) => {
     const api = `${sonarUrl}/api/project_analyses/search`
     const params = { "project": projectKey };
     let analysis;
@@ -36,6 +21,23 @@ export const getDateAnalysis = async (analysisId, projectKey, sonarUrl, sonarTok
 
     return analysis;
 };
+
+export const getAnalysisResults = async (analysisId, sonarUrl, sonarToken) => {
+    const api = `${sonarUrl}/api/qualitygates/project_status`
+    const params = { analysisId };
+    
+    const response = await axios.get(api,
+        {
+            params,
+            auth: {
+                username: sonarToken,
+                password: "",
+            },
+        });
+    return response.data;
+};
+
+
 
 export const getQualityGate = async (projectKey, sonarUrl, sonarToken) => {
     const api = `${sonarUrl}/api/qualitygates/get_by_project`

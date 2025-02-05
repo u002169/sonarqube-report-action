@@ -1,8 +1,11 @@
 import * as core from "@actions/core";
 import { Table } from 'console-table-printer';
 import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji, getStatusAnalysis } from "./utils.js";
+const  linkGuiaSonar='https://neon.go/sonar-guia';
+const cText="\x1b[1;36m";
+const cTitle="\x1b[1;31m";
 
-export const buildPrintReportConsole = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed) => {
+export const buildPrintReportConsole = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, dashSonar) => {
 	const reportTable = new Table({
 		charLength: { "🟢": 2, "🔴": 2, "🟡": 2, "❔": 2, "❌": 2 },
 		columns: [
@@ -24,19 +27,29 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 		return newRow;
 	});
 
-	console.log("------------------------------------------------------------------------");
-	console.log("                            SonarQube Report                            ");
-	console.log("------------------------------------------------------------------------");
+	console.log("");
+	console.log("------------------------------------------------------------------------------------------");
+	console.log("                                     SonarQube Report                                     ");
+	console.log("------------------------------------------------------------------------------------------");
 	console.log( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
 	console.log( `Data da análise: ${dateAnalysis}` )
 	console.log( `ID da Análise: ${analysisId}` )
 	console.log( `Quality Gate: ${qualityGate}` )
 	console.log( `Fonte analisado: ${sourceAnalysed}` );
+
 	reportTable.addRows(rows);
 	reportTable.printTable();
+
+	console.log( `💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡` )
+    console.log( `${linkGuiaSonar}` );        
+	console.log( `Dashboard de análise no Sonar:` )
+    console.log( `${dashSonar}` );
+	console.log("------------------------------------------------------------------------------------------");
+	console.log("");
+    
 };
 
-export const buildPrintReportSummary = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed ) => {
+export const buildPrintReportSummary = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, dashSonar) => {
 	let tableSummary = [];
 	const header = [
 		{ header: true, data: "Critério" },
@@ -72,12 +85,22 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addRaw( `Fonte analisado: ${sourceAnalysed}` )
 		.addBreak()
 		.addTable(tableSummary)
+		.addBreak()
+		.addRaw( `💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡` )
+		.addBreak()
+		.addRaw( `${linkGuiaSonar}` )
+		.addBreak()
+		.addRaw( `Dashboard de análise no Sonar:` )
+		.addBreak()
+		.addRaw( `${dashSonar}` )
+		.addBreak()
+
 		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
 };
 
-export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, sonarUrl, projectKey, context) => {
-	const reportUrl = '${sonarUrl}/dashboard?id=${projectKey}';
+export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, dashSonar) => {
+	
 	
 	const resultTable = analysisResult.projectStatus.conditions.map((row) => {
 		const rowValues = [
@@ -94,7 +117,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		`**Data da análise**: ${dateAnalysis}`,
 		`**ID da Análise**: ${analysisId}`,
 		`**Quality Gate**: ${qualityGate}`,
-		`- **Fonte analisado**: ${sourceAnalysed}`,
+		`**Fonte analisado**: ${sourceAnalysed}`,
 		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 	];
 
@@ -102,12 +125,17 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		`## SonarQube Report\n` +
 		`${resultContext.join("\n")}` +
 		`\n \n` +
+		
 		`| Critério | Parecer | Resultado | Threshold para Reprovação |\n` +
 		`|:--------:|:-------:|:---------:|:-------------------------:|\n` +
 		`${resultTable}` +
+		
 		`\n \n` +
-		`[Para análise detalhada, acesse o SonarQube](${reportUrl})\n` +
-		`#### *No dash do Sonar abre na última análise, verifique se é o mesmo dia e horário da análise do report`;
+		`💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡\n` +
+		`${linkGuiaSonar}\n` +
+		`Dashboard de análise no Sonar:\n` +
+		 `${dashSonar}`;
+		//`#### *No dash do Sonar abre na última análise, verifique se é o mesmo dia e horário da análise do report`;
 
 	return report;
 };
