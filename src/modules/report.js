@@ -98,8 +98,6 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 };
 
 export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, dashSonar) => {
-	
-	
 	const resultTable = analysisResult.projectStatus.conditions.map((row) => {
 		const rowValues = [
 			formatMetricKey(row.metricKey), // Metric
@@ -110,18 +108,14 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		return "|" + rowValues.join("|") + "|";
 	}).join("\n");
 
-	const resultContext = [
-		`- **Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
+	const report =
+		`## SonarQube Report\n` +
+		`**Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }**\n` +
 		`💡 Acesse o guia para identificar a causa da reprovação: 💡\n` +
 		`${linkGuiaSonar}\n` +
 		`Dashboard de análise no Sonar:\n` +
-		`${dashSonar}`,
-	];
-
-	const report =
-		`## SonarQube Report\n` +
-		`${resultContext.join("\n")}` +
-		`\n \n` +
+		`${dashSonar}\n` +
+		`\n`+
 		
 		`| Critério | Parecer | Resultado | Threshold para Reprovação |\n` +
 		`|:--------:|:-------:|:---------:|:-------------------------:|\n` +
