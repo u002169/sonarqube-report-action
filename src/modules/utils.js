@@ -37,6 +37,16 @@ export const getComparatorSymbol = (comparator) => {
 	}
 };
 
+export const getTypeMetric = (metricKey) => {
+	const metricPercentage = ["coverage", "duplicated_lines_density", "security_hotspots_reviewed"];
+	let ret = "";
+	metricPercentage.forEach((metric) => {
+		if (metricKey.includes(metric)) 
+			ret = "%";	
+	});
+	return ret;
+};
+
 export const sourceAnalysedMsg = (analysisResult) => {
 	let ret;
 	if(analysisResult.projectStatus.period.mode == "NUMBER_OF_DAYS") {
@@ -44,3 +54,4 @@ export const sourceAnalysedMsg = (analysisResult) => {
 	}
 	return ret;
 }
+

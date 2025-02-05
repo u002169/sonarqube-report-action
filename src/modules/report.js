@@ -1,9 +1,7 @@
 import * as core from "@actions/core";
 import { Table } from 'console-table-printer';
-import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji, getStatusAnalysis } from "./utils.js";
+import { formatMetricKey, formatStringNumber, getComparatorSymbol, getStatusEmoji, getStatusAnalysis, getTypeMetric } from "./utils.js";
 const  linkGuiaSonar='https://neon.go/sonar-guia';
-const cText="\x1b[1;36m";
-const cTitle="\x1b[1;31m";
 
 export const buildPrintReportConsole = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, dashSonar) => {
 	const reportTable = new Table({
@@ -22,7 +20,7 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 			criterio: formatMetricKey(row.metricKey),
 			parecer: getStatusEmoji(row.status),
 			resultado: formatStringNumber(row.actualValue),
-			threshold: `${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
+			threshold: `${getComparatorSymbol(row.comparator)} ${row.errorThreshold} ${getTypeMetric(row.metricKey)}`,
 		}
 		return newRow;
 	});
@@ -63,7 +61,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 				formatMetricKey(row.metricKey),
 				getStatusEmoji(row.status),
 				formatStringNumber(row.actualValue),
-				`${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`,
+				`${getComparatorSymbol(row.comparator)} ${row.errorThreshold} ${getTypeMetric(row.metricKey)}`,
 			]
 		return newRow;
 	})
@@ -103,7 +101,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 			formatMetricKey(row.metricKey), // Metric
 			getStatusEmoji(row.status), // Status
 			formatStringNumber(row.actualValue), // Value
-			`${getComparatorSymbol(row.comparator)} ${row.errorThreshold}`, // Error Threshold
+			`${getComparatorSymbol(row.comparator)} ${row.errorThreshold} ${getTypeMetric(row.metricKey)}`, // Error Threshold
 		];
 		return "|" + rowValues.join("|") + "|";
 	}).join("\n");
