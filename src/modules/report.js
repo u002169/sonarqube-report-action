@@ -30,8 +30,10 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 	console.log("                                     SonarQube Report                                     ");
 	console.log("------------------------------------------------------------------------------------------");
 	console.log( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
-	console.log( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
-    console.log( `${linkGuiaSonar}` );        
+	if ( analysisResult.projectStatus.status == "ERROR" ){
+		console.log( `💡 Acesse o guia para identificar a causa da reprovação: 💡` );
+		console.log( `${linkGuiaSonar}` );      
+	}  
 	console.log( `Dashboard de análise no Sonar:` )
     console.log( `${dashSonar}` );
 
@@ -72,9 +74,12 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 	await core.summary
 		.addHeading('SonarQube Report', 2)
 		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
-		.addBreak()
-		.addRaw( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
-		.addBreak()
+		.addBreak();
+	if ( analysisResult.projectStatus.status == "ERROR" ){
+		await core.summary.addRaw( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
+		.addBreak();
+	}
+	await core.summary
 		.addLink( `${linkGuiaSonar}` )
 		.addBreak()
 		.addRaw( `Dashboard de análise no Sonar:` )
@@ -98,19 +103,23 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, dashSonar) => {
 	const resultTable = analysisResult.projectStatus.conditions.map((row) => {
 		const rowValues = [
-			formatMetricKey(row.metricKey), // Metric
-			getStatusEmoji(row.status), // Status
-			formatStringNumber(row.actualValue), // Value
-			`${getComparatorSymbol(row.comparator)} ${row.errorThreshold} ${getTypeMetric(row.metricKey)}`, // Error Threshold
+			formatMetricKey(row.metricKey),
+			getStatusEmoji(row.status),
+			formatStringNumber(row.actualValue), 
+			`${getComparatorSymbol(row.comparator)} ${row.errorThreshold} ${getTypeMetric(row.metricKey)}`,
 		];
 		return "|" + rowValues.join("|") + "|";
 	}).join("\n");
 
-	const report =
+	let report =
 		`## SonarQube Report\n` +
-		`**Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }**\n` +
+		`**Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }**\n`;
+	if ( analysisResult.projectStatus.status == "ERROR" ){
+		report +=
 		`💡 Acesse o guia para identificar a causa da reprovação: 💡\n` +
-		`${linkGuiaSonar}\n` +
+		`${linkGuiaSonar}\n`;
+	}
+	report +=
 		`Dashboard de análise no Sonar:\n` +
 		`${dashSonar}\n` +
 		`\n`+
