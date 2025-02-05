@@ -41,7 +41,7 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 	reportTable.printTable();
 
 	console.log( `Data da análise: ${dateAnalysis}` )
-	console.log( `ID da Análise: ${analysisId}` )
+	console.log( `ID: ${analysisId}` )
 	console.log( `Quality Gate: ${qualityGate}` )
 	console.log( `Fonte analisado: ${sourceAnalysed}` );
 	console.log("------------------------------------------------------------------------------------------");
@@ -88,7 +88,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 
 		.addRaw( `Data da análise: ${dateAnalysis}` )
 		.addBreak()
-		.addRaw( `ID da Análise: ${analysisId}` )
+		.addRaw( `ID: ${analysisId}` )
 		.addBreak()
 		.addRaw( `Quality Gate: ${qualityGate}` )
 		.addBreak()
@@ -123,7 +123,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		
 		`\n \n` +
 		`Data da análise: ${dateAnalysis}\n` +
-		`ID da Análise: ${analysisId}\n` +
+		`ID: ${analysisId}\n` +
 		`Quality Gate: ${qualityGate}\n` +
 		`Fonte analisado: ${sourceAnalysed}\n`
 		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
