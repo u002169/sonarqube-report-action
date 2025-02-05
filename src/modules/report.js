@@ -85,7 +85,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addRaw( `Dashboard de análise no Sonar:` )
 		.addBreak()
 		.addLink( `${dashSonar}` )
-		.addBreak()
+		.addBreak().addBreak()
 
 		.addTable(tableSummary)
 
