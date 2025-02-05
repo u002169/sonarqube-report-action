@@ -111,7 +111,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 	}).join("\n");
 
 	const resultContext = [
-		`-**Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
+		`- **Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
 		`💡 Acesse o guia para identificar a causa da reprovação: 💡\n` +
 		`${linkGuiaSonar}\n` +
 		`Dashboard de análise no Sonar:\n` +
