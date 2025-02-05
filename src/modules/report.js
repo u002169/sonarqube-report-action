@@ -32,21 +32,20 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 	console.log("                                     SonarQube Report                                     ");
 	console.log("------------------------------------------------------------------------------------------");
 	console.log( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
-	console.log( `Data da análise: ${dateAnalysis}` )
-	console.log( `ID da Análise: ${analysisId}` )
-	console.log( `Quality Gate: ${qualityGate}` )
-	console.log( `Fonte analisado: ${sourceAnalysed}` );
-
-	reportTable.addRows(rows);
-	reportTable.printTable();
-
 	console.log( `💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡` )
     console.log( `${linkGuiaSonar}` );        
 	console.log( `Dashboard de análise no Sonar:` )
     console.log( `${dashSonar}` );
+
+	reportTable.addRows(rows);
+	reportTable.printTable();
+
+	console.log( `Data da análise: ${dateAnalysis}` )
+	console.log( `ID da Análise: ${analysisId}` )
+	console.log( `Quality Gate: ${qualityGate}` )
+	console.log( `Fonte analisado: ${sourceAnalysed}` );
 	console.log("------------------------------------------------------------------------------------------");
 	console.log("");
-    
 };
 
 export const buildPrintReportSummary = async (analysisResult, analysisId, dateAnalysis, qualityGate, sourceAnalysed, dashSonar) => {
@@ -76,6 +75,17 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addHeading('SonarQube Report', 2)
 		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
 		.addBreak()
+		.addRaw( `💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡` )
+		.addBreak()
+		.addLink( `${linkGuiaSonar}` )
+		.addBreak()
+		.addRaw( `Dashboard de análise no Sonar:` )
+		.addBreak()
+		.addLink( `${dashSonar}` )
+		.addBreak()
+
+		.addTable(tableSummary)
+
 		.addRaw( `Data da análise: ${dateAnalysis}` )
 		.addBreak()
 		.addRaw( `ID da Análise: ${analysisId}` )
@@ -83,18 +93,6 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addRaw( `Quality Gate: ${qualityGate}` )
 		.addBreak()
 		.addRaw( `Fonte analisado: ${sourceAnalysed}` )
-		.addBreak()
-		.addTable(tableSummary)
-		.addBreak()
-		.addRaw( `💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡` )
-		.addBreak()
-		.addRaw( `${linkGuiaSonar}` )
-		.addBreak()
-		.addRaw( `Dashboard de análise no Sonar:` )
-		.addBreak()
-		.addRaw( `${dashSonar}` )
-		.addBreak()
-
 		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
 };
@@ -114,11 +112,10 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 
 	const resultContext = [
 		`**Parecer**: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }`,
-		`**Data da análise**: ${dateAnalysis}`,
-		`**ID da Análise**: ${analysisId}`,
-		`**Quality Gate**: ${qualityGate}`,
-		`**Fonte analisado**: ${sourceAnalysed}`,
-		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
+		`💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡\n` +
+		`${linkGuiaSonar}\n` +
+		`Dashboard de análise no Sonar:\n` +
+		`${dashSonar}`,
 	];
 
 	const report =
@@ -131,10 +128,11 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 		`${resultTable}` +
 		
 		`\n \n` +
-		`💡💡 Acesse o guia para identificar a causa da reprovação: 💡💡\n` +
-		`${linkGuiaSonar}\n` +
-		`Dashboard de análise no Sonar:\n` +
-		 `${dashSonar}`;
+		`Data da análise**: ${dateAnalysis}\n` +
+		`ID da Análise**: ${analysisId}\n` +
+		`Quality Gate**: ${qualityGate}\n` +
+		`Fonte analisado**: ${sourceAnalysed}\n`
+		//`- Solicitado por @${context.actor} on \`${context.eventName}\``,
 		//`#### *No dash do Sonar abre na última análise, verifique se é o mesmo dia e horário da análise do report`;
 
 	return report;
