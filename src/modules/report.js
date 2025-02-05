@@ -74,7 +74,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 	await core.summary
 		.addHeading('SonarQube Report', 2)
 		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
-		.addBreak().addBreak();
+		.addBreak();
 	if ( analysisResult.projectStatus.status == "ERROR" ){
 		await core.summary.addRaw( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
 		.addBreak();
@@ -85,7 +85,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addRaw( `Dashboard de análise no Sonar:` )
 		.addBreak()
 		.addLink( `${dashSonar}` )
-		.addBreak().addBreak()
+		.addBreak()
 
 		.addTable(tableSummary)
 
