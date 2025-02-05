@@ -2,6 +2,9 @@ name: 'SonarQube Report'
 description: 'Gera report do Sonar na log, summary e PR'
 
 inputs:
+  sonar-analysis-id:
+    description: "SonarQube Analysis id"
+    required: false
   sonar-project-key:
     description: "SonarQube project key"
     required: true
