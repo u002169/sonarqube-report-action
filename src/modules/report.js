@@ -73,7 +73,7 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 
 	await core.summary
 		.addHeading('SonarQube Report', 2)
-		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ), true }` )
+		.addRaw( `Parecer: ${ getStatusAnalysis( analysisResult.projectStatus.status ) }` )
 		.addBreak();
 	if ( analysisResult.projectStatus.status == "ERROR" ){
 		await core.summary.addRaw( `💡 Acesse o guia para identificar a causa da reprovação: 💡` )
@@ -82,19 +82,20 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 	await core.summary
 		.addLink( `${linkGuiaSonar}` )
 		.addBreak()
-		.addRaw( `Dashboard de análise no Sonar:`, true )
+		.addRaw( `Dashboard de análise no Sonar:` )
+		.addBreak()
 		.addLink( `${dashSonar}` )
 		.addBreak()
 
 		.addTable(tableSummary)
 
-		.addRaw( `Data da análise: ${dateAnalysis}`, true )
+		.addRaw( `Data da análise: ${dateAnalysis}` )
 		.addBreak()
 		.addRaw( `ID: ${analysisId}`, true )
 		.addBreak()
-		.addRaw( `Quality Gate: ${qualityGate}`, true )
+		.addRaw( `Quality Gate: ${qualityGate}` )
 		.addBreak()
-		.addRaw( `Fonte analisado: ${sourceAnalysed}`, true )
+		.addRaw( `Fonte analisado: ${sourceAnalysed}` )
 		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
 };
