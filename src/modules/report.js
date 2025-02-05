@@ -83,18 +83,15 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addLink( `${linkGuiaSonar}` )
 		.addBreak()
 		.addRaw( `Dashboard de análise no Sonar:`, true )
-		.addBreak()
 		.addLink( `${dashSonar}` )
 		.addBreak()
 
 		.addTable(tableSummary)
 
 		.addRaw( `Data da análise: ${dateAnalysis}`, true )
-		.addBreak()
 		.addRaw( `ID: ${analysisId}` )
 		.addBreak()
 		.addRaw( `Quality Gate: ${qualityGate}`, true )
-		.addBreak()
 		.addRaw( `Fonte analisado: ${sourceAnalysed}` )
 		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
