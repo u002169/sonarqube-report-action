@@ -99,7 +99,6 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addRaw( `Quality Gate: ${qualityGate}` )
 		.addBreak()
 		.addRaw( `Fonte analisado: ${sourceAnalysed}` )
-		//.addLink('View staging deployment!', 'https://github.com')
 		.write();
 };
 

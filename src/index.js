@@ -75,4 +75,3 @@ try {
         core.setFailed("Unexpected error");
     }
 }
-//console.log("taskInfos: " + JSON.stringify(taskInfos,null,2));
