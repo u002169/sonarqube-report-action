@@ -52,6 +52,8 @@ try {
 
         const reportBody = buildReportPR(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
 
+        console.log("CHEGUEI");
+
         await printReportPR(reportBody, context, githubToken);
     }
 
