@@ -8,11 +8,12 @@ import { sourceAnalysedMsg } from "./modules/utils.js";
 try {
     console.log("START");
     console.log(core.getInput('sonar-analysis-id'));
-    const analysisId = core.getInput('sonar-analysis-id') || process.env["sonar-analysis-id"] ? process.env["sonar-analysis-id"].trim() : "";
+    const analysisId = core.getInput('sonar-analysis-id') || process.env["sonar-analysis-id"];
+    console.log(analysisId);
     console.log("CHEGUEI AQUI");
-    const projectKey = core.getInput('sonar-project-key') || process.env["sonar-project-key"].trim();
-    const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"].trim();
-    const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"].trim();
+    const projectKey = core.getInput('sonar-project-key') || process.env["sonar-project-key"];
+    const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"];
+    const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"];
     const githubToken = core.getInput('github-token');
 
     const analysisInfos = await getAnalysisInfos(analysisId, projectKey, sonarUrl, sonarToken);
