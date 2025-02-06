@@ -6,23 +6,22 @@ import { printReportPR } from "./modules/print.js";
 import { sourceAnalysedMsg } from "./modules/utils.js";
 
 try {
-    const analysisId = core.getInput('sonar-analysis-id') || process.env["sonar-analysis-id"];
+    const taskId = core.getInput('sonar-task-id') || process.env["sonar-task-id"];
     const projectKey = core.getInput('sonar-project-key') || process.env["sonar-project-key"];
     const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"];
     const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"];
     const githubToken = core.getInput('github-token');
-    
-    const analysisInfos = await getAnalysisInfos(analysisId, projectKey, sonarUrl, sonarToken);    
-    console.log("analysisInfos: " + analysisInfos);
-    const analysisKey = analysisInfos.key;
-    const analysisResults = await getAnalysisResults(analysisKey, sonarUrl, sonarToken);
-    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
 
-    console.log("CHEGUEI AQUI");
+    const taskInfos = await getTaskInfos(taskId, sonarUrl, sonarToken);
+    const analysisId = taskInfos.analysisId;
+    const analysisResults = await getAnalysisResults(analysisId, sonarUrl, sonarToken);
+    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
     
-    const analysisDate = new Date(analysisInfos.date).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+    const analysisDate = new Date(taskInfos.executedAt).toISOString().replace(/T/, ' ').replace(/\..+/, '');
     const dashSonar = `${sonarUrl}/dashboard?id=${projectKey}`;
     const sourceAnalysed = sourceAnalysedMsg(analysisResults);
+
+    console.log("CHEGUEI AQUI");
 
     // Print report to console
     try {
