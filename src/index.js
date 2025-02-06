@@ -15,7 +15,7 @@ try {
     //API analysis task infos
     const taskInfos = await getTaskInfos(taskId, sonarUrl, sonarToken);
     const analysisId = taskInfos.task.analysisId;
-    const analysisDate = new Date(taskInfos.task.executedAt).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+    const analysisDate = new Date(taskInfos.task.executedAt).toLocaleString().replace(/T/, ' ').replace(/\..+/, '');
     console.log(`AnalysisId: ${analysisId}; analysisDate: ${analysisDate}`);
 
     //API analysis results by conditions and status
@@ -53,12 +53,11 @@ try {
         const reportBody = buildReportPR(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
 
         await printReportPR(reportBody, context, githubToken);
+    }
 
-        if (analysisResults.projectStatus.status === "ERROR") {
-            let resultMessage = `Reprovado na avaliação do Quality Gate no SonarQube.`;
-            console.error(resultMessage);
-            core.setFailed(resultMessage);
-        }
+    if (analysisResults.projectStatus.status === "ERROR") {
+        let resultMessage = `Reprovado na avaliação do Quality Gate no SonarQube.`;
+        core.setFailed(resultMessage);
     }
 } catch (error) {
     if (error instanceof Error) {
