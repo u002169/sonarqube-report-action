@@ -11,19 +11,14 @@ try {
     const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"];
     const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"];
     const githubToken = core.getInput('github-token');
-
-    console.log(analysisId);
-    console.log(projectKey);
-    console.log(sonarUrl);
-    console.log(sonarToken);
     
-    const analysisInfos = await getAnalysisInfos(analysisId, projectKey, sonarUrl, sonarToken);
-
-    console.log("CHEGUEI AQUI");
-    
+    const analysisInfos = await getAnalysisInfos(analysisId, projectKey, sonarUrl, sonarToken);    
+    console.log("analysisInfos: " + analysisInfos);
     const analysisKey = analysisInfos.key;
     const analysisResults = await getAnalysisResults(analysisKey, sonarUrl, sonarToken);
     const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
+
+    console.log("CHEGUEI AQUI");
     
     const analysisDate = new Date(analysisInfos.date).toISOString().replace(/T/, ' ').replace(/\..+/, '');
     const dashSonar = `${sonarUrl}/dashboard?id=${projectKey}`;
