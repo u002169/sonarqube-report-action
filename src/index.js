@@ -47,7 +47,7 @@ try {
 
     //Print report to PR
     const isPR = github.context.eventName == "pull_request";
-    if (isPR && githubToken) {
+    if (isPR) {
         const { context } = github;
 
         const reportBody = buildReportPR(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
