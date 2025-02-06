@@ -35,7 +35,8 @@ export const buildPrintReportConsole = async (analysisResult, analysisId, dateAn
 		console.log( `${linkGuiaSonar}` );      
 	}  
 	console.log( `Dashboard de análise no Sonar:` )
-    	console.log( `${dashSonar}` );
+    console.log( `${dashSonar}` );
+	console.log("Se tiver dúvias ou precisar de ajuda, envie mensagem no canal #ask-qe.");
 
 	reportTable.addRows(rows);
 	reportTable.printTable();
@@ -84,6 +85,8 @@ export const buildPrintReportSummary = async (analysisResult, analysisId, dateAn
 		.addBreak()
 		.addRaw( `Dashboard de análise no Sonar:` )
 		.addBreak()
+		.addRaw( `Se tiver dúvias ou precisar de ajuda, envie mensagem no canal #ask-qe.` )
+		.addBreak()
 		.addLink( `${dashSonar}` )
 		.addBreak()
 
@@ -122,6 +125,7 @@ export const buildReportPR = (analysisResult, analysisId, dateAnalysis, qualityG
 	report +=
 		`Dashboard de análise no Sonar:\n` +
 		`${dashSonar}\n` +
+		`Se tiver dúvias ou precisar de ajuda, envie mensagem no canal #ask-qe.\n` + 
 		`\n`+
 		
 		`| Critério | Parecer | Resultado | Threshold para Reprovação |\n` +

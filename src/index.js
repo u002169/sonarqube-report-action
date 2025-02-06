@@ -14,18 +14,22 @@ try {
 
     //API analysis task infos
     const taskInfos = await getTaskInfos(taskId, sonarUrl, sonarToken);
+    if (!taskInfos.task.analysisId || !taskInfos.task.executedAt) 
+        throw new Error(`Result taskInfos invalid: ${JSON.stringify(taskInfos,null,2)}`);
     const analysisId = taskInfos.task.analysisId;
     const analysisDate = new Date(taskInfos.task.executedAt).toLocaleString().replace(/T/, ' ').replace(/\..+/, '');
-    console.log(`AnalysisId: ${analysisId}; analysisDate: ${analysisDate}`);
 
     //API analysis results by conditions and status
     const analysisResults = await getAnalysisResults(analysisId, sonarUrl, sonarToken);
+    if (!analysisResults.projectStatus.status || !analysisResults.projectStatus.conditions) 
+        throw new Error(`Result analysisResults invalid: ${JSON.stringify(analysisResults,null,2)}`);
     const sourceAnalysed = sourceAnalysedMsg(analysisResults);
-    console.log(`AnalysisStatus: ${analysisResults.projectStatus.status}`);
     
     //API current project quality gate
-    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
-    console.log(`QualityGate: ${qualityGate}`);
+    let qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
+    if (!qualityGate.qualityGate.name) 
+        throw new Error(`Result qualityGate invalid: ${JSON.stringify(qualityGate,null,2)}`);
+    qualityGate = qualityGate.qualityGate.name;
     
     const dashSonar = `${sonarUrl}/dashboard?id=${projectKey}`;
     
@@ -33,7 +37,7 @@ try {
     try {
         await buildPrintReportConsole(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
     } catch (error) {
-        console.log("!!!!!!!!!!!! Error on buildReportConsole !!!!!!!!!!!!");
+        console.log("********* Error on ReportConsole *********");
         console.log(error);
     }
 
@@ -41,16 +45,21 @@ try {
     try {
         await buildPrintReportSummary(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
     } catch (error) {
-        console.log("!!!!!!!!!!!! Error on buildReportSummary !!!!!!!!!!!!");
+        console.log("********* Error on ReportSummary *********");
         console.log(error);
     }
 
     //Print report to PR
-    const isPR = github.context.eventName == "pull_request";
-    if (isPR) {
-        const { context } = github;
-        const reportBody = buildReportPR(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
-        await printReportPR(reportBody, context, githubToken);
+    try {
+        const isPR = github.context.eventName == "pull_request";
+        if (isPR) {
+            const { context } = github;
+            const reportBody = buildReportPR(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
+            await printReportPR(reportBody, context, githubToken);
+        }
+    } catch (error) {
+        console.log("********* Error on ReportPR *********");
+        console.log(error);
     }
 
     if (analysisResults.projectStatus.status === "ERROR") {

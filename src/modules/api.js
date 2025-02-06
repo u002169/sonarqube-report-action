@@ -18,20 +18,24 @@ export const getQualityGate = async (projectKey, sonarUrl, sonarToken) => {
     const api = `${sonarUrl}/api/qualitygates/get_by_project`
     const params = { "project": projectKey };
     const response = await requestGet(api, params, sonarToken);
-    return response.data.qualityGate.name;
+    return response.data;
 };
 
 const requestGet = async (api, params, sonarToken) => {
-    const response = await axios.get(api,
-        {
-            params,
-            auth: {
-                username: sonarToken,
-                password: "",
-            },
-        });
-
-    return response;
+    try {
+        const response = await axios.get(api,
+            {
+                params,
+                auth: {
+                    username: sonarToken,
+                    password: "",
+                },
+            });
+        return response;
+    } catch (error) {
+        console.error(`Error on ${api} with params: ${JSON.stringify(params, null, 2)}`);
+        throw(error);
+    }
 };
 
 // export const getAnalysisInfos = async (analysisId, projectKey, sonarUrl, sonarToken) => {
