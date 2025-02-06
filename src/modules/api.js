@@ -1,9 +1,8 @@
 import axios from "axios";
 
-export const getAnalysisInfos = async (analysisId, projectKey, sonarUrl, sonarToken) => {
-    const api = `${sonarUrl}/api/project_analyses/search`
-    const params = { "project": projectKey };
-    let analysis;
+export const getTaskInfos = async (taskId, sonarUrl, sonarToken) => {
+    const api = `${sonarUrl}/api/qualitygates/get_by_project`
+    const params = { "id": taskId };
     
     const response = await axios.get(api,
         {
@@ -14,12 +13,7 @@ export const getAnalysisInfos = async (analysisId, projectKey, sonarUrl, sonarTo
             },
         });
 
-    if (analysisId)
-        analysis = response.data.analyses.find(analysis => analysis.key === analysisId);
-    else
-        analysis = response.data.analyses[0];
-
-    return analysis;
+    return response.data;
 };
 
 export const getAnalysisResults = async (analysisId, sonarUrl, sonarToken) => {
@@ -54,3 +48,25 @@ export const getQualityGate = async (projectKey, sonarUrl, sonarToken) => {
 
     return response.data.qualityGate.name;
 };
+
+// export const getAnalysisInfos = async (analysisId, projectKey, sonarUrl, sonarToken) => {
+//     const api = `${sonarUrl}/api/project_analyses/search`
+//     const params = { "project": projectKey };
+//     let analysis;
+    
+//     const response = await axios.get(api,
+//         {
+//             params,
+//             auth: {
+//                 username: sonarToken,
+//                 password: "",
+//             },
+//         });
+
+//     if (analysisId)
+//         analysis = response.data.analyses.find(analysis => analysis.key === analysisId);
+//     else
+//         analysis = response.data.analyses[0];
+
+//     return analysis;
+// };
