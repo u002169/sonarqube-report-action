@@ -4,7 +4,7 @@ description: 'Gera report do Sonar na log, summary e PR'
 inputs:
   sonar-analysis-id:
     description: "SonarQube Analysis id"
-    required: false
+    required: true
   sonar-project-key:
     description: "SonarQube project key"
     required: true
