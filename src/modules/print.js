@@ -5,7 +5,7 @@ export const printReportPR = async (reportBody, context, githubToken) => {
     const repo = context.repo.repo;
     const issue_number = context.issue.number;
 
-    const octokit = github.getOctokit(githubToken);
+    const octokit = github.getOctokit("${{ secrets.GITHUB_TOKEN }}");
 
     const { data: comments } = await octokit.rest.issues.listComments({ owner, repo, issue_number })
 
