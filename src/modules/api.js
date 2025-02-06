@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const getTaskInfos = async (taskId, sonarUrl, sonarToken) => {
-    const api = `${sonarUrl}/api/qualitygates/get_by_project`
+    const api = `${sonarUrl}/api/ce/task`
     const params = { "id": taskId };
     
     const response = await axios.get(api,
