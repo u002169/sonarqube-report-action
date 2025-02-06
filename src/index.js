@@ -13,6 +13,7 @@ try {
     const githubToken = core.getInput('github-token');
 
     const taskInfos = await getTaskInfos(taskId, sonarUrl, sonarToken);
+    console.log("taskInfos: " + taskInfos);
     const analysisId = taskInfos.analysisId;
     const analysisResults = await getAnalysisResults(analysisId, sonarUrl, sonarToken);
     const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
