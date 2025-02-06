@@ -6,24 +6,29 @@ import { printReportPR } from "./modules/print.js";
 import { sourceAnalysedMsg } from "./modules/utils.js";
 
 try {
-    const taskId = core.getInput('sonar-task-id') || process.env["sonar-task-id"];
-    const projectKey = core.getInput('sonar-project-key') || process.env["sonar-project-key"];
-    const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"];
-    const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"];
+    const taskId = (core.getInput('sonar-task-id') || process.env["sonar-task-id"]).trim();
+    const projectKey = (core.getInput('sonar-project-key') || process.env["sonar-project-key"]).trim();
+    const sonarUrl = (core.getInput('sonar-host-url') || process.env["sonar-host-url"]).trim();
+    const sonarToken = (core.getInput('sonar-token') || process.env["sonar-token"]).trim();
     const githubToken = core.getInput('github-token');
 
+    //API analysis task infos
     const taskInfos = await getTaskInfos(taskId, sonarUrl, sonarToken);
-    console.log("taskInfos: " + taskInfos);
-    const analysisId = taskInfos.analysisId;
+    const analysisId = taskInfos.task.analysisId;
+    const analysisDate = new Date(taskInfos.task.executedAt).toISOString().replace(/T/, ' ').replace(/\..+/, '');
+    console.log(`AnalysisId: ${analysisId}; analysisDate: ${analysisDate}`);
+
+    //API analysis results by conditions and status
     const analysisResults = await getAnalysisResults(analysisId, sonarUrl, sonarToken);
-    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
-    
-    const analysisDate = new Date(taskInfos.executedAt).toISOString().replace(/T/, ' ').replace(/\..+/, '');
-    const dashSonar = `${sonarUrl}/dashboard?id=${projectKey}`;
     const sourceAnalysed = sourceAnalysedMsg(analysisResults);
-
-    console.log("CHEGUEI AQUI");
-
+    console.log(`AnalysisStatus: ${analysisResults.projectStatus.status}`);
+    
+    //API current project quality gate
+    const qualityGate = await getQualityGate(projectKey, sonarUrl, sonarToken);
+    console.log(`QualityGate: ${qualityGate}`);
+    
+    const dashSonar = `${sonarUrl}/dashboard?id=${projectKey}`;
+    
     // Print report to console
     try {
         await buildPrintReportConsole(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
@@ -64,3 +69,4 @@ try {
         core.setFailed("Unexpected error");
     }
 }
+//console.log("taskInfos: " + JSON.stringify(taskInfos,null,2));
