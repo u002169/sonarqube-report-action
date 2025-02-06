@@ -1,6 +1,6 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import { getAnalysisInfos, getAnalysisResults, getQualityGate } from "./modules/api.js";
+import { getTaskInfos, getAnalysisResults, getQualityGate } from "./modules/api.js";
 import { buildPrintReportConsole, buildPrintReportSummary, buildReportPR } from "./modules/report.js";
 import { printReportPR } from "./modules/print.js";
 import { sourceAnalysedMsg } from "./modules/utils.js";
@@ -25,7 +25,7 @@ try {
 
     // Print report to console
     try {
-        await buildPrintReportConsole(analysisResults, analysisKey, analysisDate, qualityGate, sourceAnalysed, dashSonar);
+        await buildPrintReportConsole(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
     } catch (error) {
         console.log("!!!!!!!!!!!! Error on buildReportConsole !!!!!!!!!!!!");
         console.log(error);
@@ -33,7 +33,7 @@ try {
 
     //Print report to summary
     try {
-        await buildPrintReportSummary(analysisResults, analysisKey, analysisDate, qualityGate, sourceAnalysed, dashSonar);
+        await buildPrintReportSummary(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
     } catch (error) {
         console.log("!!!!!!!!!!!! Error on buildReportSummary !!!!!!!!!!!!");
         console.log(error);
@@ -44,7 +44,7 @@ try {
     if (isPR && githubToken) {
         const { context } = github;
 
-        const reportBody = buildReportPR(analysisResults, analysisKey, analysisDate, qualityGate, sourceAnalysed, dashSonar);
+        const reportBody = buildReportPR(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
 
         await printReportPR(reportBody, context, githubToken);
 
