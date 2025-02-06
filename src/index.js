@@ -49,11 +49,7 @@ try {
     const isPR = github.context.eventName == "pull_request";
     if (isPR) {
         const { context } = github;
-
         const reportBody = buildReportPR(analysisResults, analysisId, analysisDate, qualityGate, sourceAnalysed, dashSonar);
-
-        console.log("CHEGUEI");
-
         await printReportPR(reportBody, context, githubToken);
     }
 
