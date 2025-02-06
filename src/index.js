@@ -7,6 +7,7 @@ import { sourceAnalysedMsg } from "./modules/utils.js";
 
 try {
     const analysisId = core.getInput('sonar-analysis-id') || process.env["sonar-analysis-id"] ? process.env["sonar-analysis-id"].trim() : "";
+    console.log("CHEGUEI AQUI");
     const projectKey = core.getInput('sonar-project-key') || process.env["sonar-project-key"].trim();
     const sonarUrl = core.getInput('sonar-host-url') || process.env["sonar-host-url"].trim();
     const sonarToken = core.getInput('sonar-token') || process.env["sonar-token"].trim();
