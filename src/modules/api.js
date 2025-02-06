@@ -13,6 +13,8 @@ export const getTaskInfos = async (taskId, sonarUrl, sonarToken) => {
             },
         });
 
+    console.log(JSON.stringify(response,null,2));
+
     return response.data;
 };
 
